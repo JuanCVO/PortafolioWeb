@@ -5,7 +5,6 @@ import {
   MenubarMenu,
   MenubarTrigger,
 } from "@app/components/ui/menubar"
-import { useRouter } from "next/navigation"
 import {
   Home,
   Briefcase,
@@ -16,7 +15,6 @@ import {
 } from "lucide-react"
 
 export function MenubarComponent() {
-  const router = useRouter()
 
   const scrollTo = (id: string) => {
     const section = document.getElementById(id)

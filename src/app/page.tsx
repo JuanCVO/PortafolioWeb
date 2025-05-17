@@ -7,7 +7,7 @@ import Image from "next/image";
 import {
   SiNodedotjs, SiJavascript, SiHtml5, SiCss3, SiTailwindcss,
   SiReact, SiNextdotjs, SiPhp, SiMysql, SiPostgresql, SiGit,
-  SiGithub, SiJira, SiMicrogenetics,
+  SiGithub, SiJira,
 } from "react-icons/si";
 
 export default function Home() {
@@ -83,25 +83,25 @@ export default function Home() {
         <Card className="bg-[#233c98] text-white rounded-2xl shadow-lg">
           <CardContent className="p-6 space-y-2">
             <ul className="grid grid-cols-2 sm:grid-cols-3 gap-4 text-sm">
-              {[["Node.js", <SiNodedotjs className="text-green-400" />],
-                ["JavaScript", <SiJavascript className="text-yellow-300" />],
-                ["HTML", <SiHtml5 className="text-orange-500" />],
-                ["CSS", <SiCss3 className="text-blue-400" />],
-                ["Tailwind CSS", <SiTailwindcss className="text-cyan-300" />],
-                ["React.js", <SiReact className="text-blue-300" />],
-                ["Next.js", <SiNextdotjs className="text-white" />],
-                ["PHP", <SiPhp className="text-purple-400" />],
-                ["MySQL", <SiMysql className="text-yellow-300" />],
-                ["PostgreSQL", <SiPostgresql className="text-blue-200" />],
-                ["Git", <SiGit className="text-orange-400" />],
-                ["GitHub", <SiGithub className="text-gray-300" />],
-                ["Jira", <SiJira className="text-blue-300" />],
-                ["Microservicios", <SiMicrogenetics className="text-pink-300" />]
-              ].map(([name, icon], idx) => (
-                <li key={idx} className="flex items-center space-x-2">
-                  {icon} <span>{name}</span>
-                </li>
-              ))}
+              {[
+  ["Node.js", <SiNodedotjs key="nodejs" className="text-green-400" />],
+  ["JavaScript", <SiJavascript key="js" className="text-yellow-300" />],
+  ["HTML", <SiHtml5 key="html" className="text-orange-500" />],
+  ["CSS", <SiCss3 key="css" className="text-blue-400" />],
+  ["Tailwind CSS", <SiTailwindcss key="tailwind" className="text-cyan-300" />],
+  ["React.js", <SiReact key="react" className="text-blue-300" />],
+  ["Next.js", <SiNextdotjs key="next" className="text-white" />],
+  ["PHP", <SiPhp key="php" className="text-purple-400" />],
+  ["MySQL", <SiMysql key="mysql" className="text-yellow-300" />],
+  ["PostgreSQL", <SiPostgresql key="postgresql" className="text-blue-200" />],
+  ["Git", <SiGit key="git" className="text-orange-400" />],
+  ["GitHub", <SiGithub key="github" className="text-gray-300" />],
+  ["Jira", <SiJira key="jira" className="text-blue-300" />],
+].map(([name, icon], idx) => (
+  <li key={idx} className="flex items-center space-x-2">
+    {icon} <span>{name}</span>
+  </li>
+))}
             </ul>
           </CardContent>
         </Card>
