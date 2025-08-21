@@ -51,13 +51,6 @@ export default function Home() {
                 <li>Automatización de reportes estratégicos.</li>
               </ul>
             </div>
-            <div>
-              <p className="font-bold">Servicio al Cliente</p>
-              <p className="text-sm">Celeste Restaurant (Sep 2023 – Dic 2024)<br />Almacén Es Tío (Ene 2019 – Feb 2020)</p>
-              <ul className="list-disc list-inside mt-2 text-sm">
-                <li>Atención al cliente y resolución de problemas.</li>
-              </ul>
-            </div>
           </CardContent>
         </Card>
       </section>
