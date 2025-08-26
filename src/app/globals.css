@@ -125,3 +125,85 @@ html {
     @apply bg-background text-foreground;
   }
 }
+
+/* 🔮 LUCES FLOTANTES */
+body::before,
+body::after,
+body::backdrop,
+body::marker,
+body::selection {
+  content: "";
+  position: fixed;
+  border-radius: 9999px;
+  filter: blur(120px);
+  opacity: 0.4;
+  z-index: -10;
+  animation: float 12s ease-in-out infinite alternate;
+}
+
+/* Luz 1 */
+body::before {
+  top: 10%;
+  left: 15%;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, oklch(0.696 0.17 162.48) 0%, transparent 70%);
+  animation-delay: 0s;
+}
+
+/* Luz 2 */
+body::after {
+  bottom: 20%;
+  right: 20%;
+  width: 400px;
+  height: 400px;
+  background: radial-gradient(circle, oklch(0.769 0.188 70.08) 0%, transparent 70%);
+  animation-delay: 6s;
+}
+
+/* Luz 3 extra */
+body::backdrop {
+  top: 50%;
+  left: 70%;
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, oklch(0.488 0.243 264.376) 0%, transparent 70%);
+  animation: float2 15s ease-in-out infinite alternate;
+}
+
+/* Luz 4 extra */
+body::marker {
+  bottom: 40%;
+  left: 10%;
+  width: 350px;
+  height: 350px;
+  background: radial-gradient(circle, oklch(0.828 0.189 84.429) 0%, transparent 70%);
+  animation: float3 18s ease-in-out infinite alternate;
+}
+
+@keyframes float {
+  from {
+    transform: translateY(0) translateX(0);
+  }
+  to {
+    transform: translateY(30px) translateX(-40px);
+  }
+}
+
+@keyframes float2 {
+  from {
+    transform: translateY(0) translateX(0);
+  }
+  to {
+    transform: translateY(-40px) translateX(50px);
+  }
+}
+
+@keyframes float3 {
+  from {
+    transform: translateY(0) translateX(0);
+  }
+  to {
+    transform: translateY(50px) translateX(-60px);
+  }
+}
