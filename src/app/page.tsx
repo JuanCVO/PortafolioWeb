@@ -73,7 +73,7 @@ export default function Home() {
   return (
     <main className="relative max-w-5xl mx-auto p-4 sm:p-6 md:p-10 space-y-10">
       {/* Botón de traducción */}
-      <TranslateButton setLang={setLang} lang={lang} className="fixed top-4 right-4 z-50" />
+      <TranslateButton setLang={setLang} lang={lang} />
 
       {/* Fondos decorativos (opcionales) */}
       <div className="pointer-events-none absolute top-0 right-0 w-[250px] sm:w-[400px] h-[250px] sm:h-[400px] bg-gradient-to-bl from-white/10 to-transparent rounded-full blur-3xl" />
