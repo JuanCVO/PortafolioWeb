@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { Open_Sans } from "next/font/google";
 import "./globals.css";
 import { MenubarComponent } from "@app/components/MenubarComponent";
-import TranslateButton from "@app/components/ui/TranslateButton";
 
 const openSans = Open_Sans({
   subsets: ["latin"],
