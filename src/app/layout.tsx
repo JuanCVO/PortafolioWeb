@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
-import { Open_Sans } from "next/font/google";
+import { Open_Sans, Geist } from "next/font/google";
 import "./globals.css";
+import { cn } from "@app/lib/utils";
 
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 const openSans = Open_Sans({
   subsets: ["latin"],
@@ -20,7 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
    return (
-    <html lang="es">
+    <html lang="es" className={cn("font-sans", geist.variable)}>
       <body className={`${openSans.variable} font-sans relative bg-[#0f172a] text-white antialiased`}>
         
         {children}
