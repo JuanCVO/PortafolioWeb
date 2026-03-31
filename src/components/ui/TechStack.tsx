@@ -1,50 +1,52 @@
-import {
-  SiNodedotjs,
-  SiJavascript,
-  SiHtml5,
-  SiCss3,
-  SiTailwindcss,
-  SiReact,
-  SiNextdotjs,
-  SiPhp,
-  SiMysql,
-  SiPostgresql,
-  SiGit,
-  SiGithub,
-  SiJira,
-} from "react-icons/si";
+import { motion } from "framer-motion"; 
 
-const technologies = [
-  { name: "Node.js", icon: <SiNodedotjs className="text-green-500 w-16 h-16" /> },
-  { name: "JavaScript", icon: <SiJavascript className="text-yellow-400 w-16 h-16" /> },
-  { name: "HTML5", icon: <SiHtml5 className="text-orange-500 w-16 h-16" /> },
-  { name: "CSS3", icon: <SiCss3 className="text-blue-500 w-16 h-16" /> },
-  { name: "Tailwind CSS", icon: <SiTailwindcss className="text-cyan-400 w-16 h-16" /> },
-  { name: "React.js", icon: <SiReact className="text-cyan-300 w-16 h-16" /> },
-  { name: "Next.js", icon: <SiNextdotjs className="text-white w-16 h-16" /> },
-  { name: "PHP", icon: <SiPhp className="text-indigo-400 w-16 h-16" /> },
-  { name: "MySQL", icon: <SiMysql className="text-blue-600 w-16 h-16" /> },
-  { name: "PostgreSQL", icon: <SiPostgresql className="text-sky-700 w-16 h-16" /> },
-  { name: "Git", icon: <SiGit className="text-orange-600 w-16 h-16" /> },
-  { name: "GitHub", icon: <SiGithub className="text-gray-300 w-16 h-16" /> },
-  { name: "Jira", icon: <SiJira className="text-blue-500 w-16 h-16" /> },
-];
 
 export default function TechStack() {
+  const techs = [
+    // Tu stack actual (mantengo todo)
+    { name: "React", color: "#61dafb" },
+    { name: "Next.js", color: "#000000" },
+    { name: "TypeScript", color: "#3178c6" },
+    { name: "Node.js", color: "#3c873a" },
+    { name: "Express", color: "#4154b1" },
+    { name: "PostgreSQL", color: "#336791" },
+    { name: "Prisma", color: "#0c719f" },
+    { name: "Tailwind CSS", color: "#38bdf8" },
+    
+    // Frontend + herramientas modernas
+    { name: "shadcn/ui", color: "#ffffff" },
+    { name: "Framer Motion", color: "#ff4f9c" },
+    { name: "Zustand", color: "#ff5e5b" },
+    
+    // Backend + DevOps
+    { name: "Docker", color: "#2496ed" },
+    { name: "Vercel", color: "#000000" },
+    { name: "Git", color: "#f05032" },
+    
+    // Data/ML (tu experiencia)
+    { name: "Python", color: "#3776ab" },
+    { name: "Pandas", color: "#150458" },
+    { name: "NumPy", color: "#013243" },
+  ];
+
   return (
-    <section className="py-16 bg-[#1e293b] text-center">
-      <h2 className="text-3xl font-bold mb-10">Mis tecnologías</h2>
-      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-8 justify-items-center">
-        {technologies.map((tech) => (
-          <div
-            key={tech.name}
-            className="flex flex-col items-center justify-center bg-[#0f172a] p-6 rounded-2xl shadow-lg hover:scale-105 transition-transform"
-          >
-            {tech.icon}
-            <span className="mt-2 text-sm">{tech.name}</span>
-          </div>
-        ))}
-      </div>
-    </section>
+    <div className="flex flex-wrap gap-2">
+      {techs.map((t, i) => (
+        <motion.span
+          key={t.name}
+          className="inline-flex items-center gap-1.5 rounded-full border border-[#30363d]/50 bg-[#0d1117]/50 px-3 py-1.5 text-xs font-medium text-[#e6edf3] shadow-md backdrop-blur-sm hover:scale-105 transition-all duration-200"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: i * 0.03 }}
+          whileHover={{ scale: 1.05, boxShadow: "0 4px 20px rgba(88, 166, 255, 0.3)" }}
+        >
+          <span 
+            className="h-2.5 w-2.5 rounded-full shrink-0" 
+            style={{ backgroundColor: t.color }} 
+          />
+          {t.name}
+        </motion.span>
+      ))}
+    </div>
   );
 }

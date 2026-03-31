@@ -1,20 +1,12 @@
-import { Button } from "@app/components/ui/button"
-import { Globe } from "lucide-react"
+"use client";
 
-interface TranslateButtonProps {
-  setLang: (lang: "es" | "en") => void
-  lang: "es" | "en"
-  className?: string
-}
-
-export default function TranslateButton({ setLang, lang, className }: TranslateButtonProps) {
+export default function TranslateButton({ lang, setLang }: { lang: "es" | "en"; setLang: (v: "es" | "en") => void }) {
   return (
-    <Button
+    <button
       onClick={() => setLang(lang === "es" ? "en" : "es")}
-      className={`fixed top-4 right-4 z-[9999] flex items-center gap-2 px-4 py-2 rounded-xl shadow-lg bg-blue-600 hover:bg-blue-700 text-white ${className}`}
+      className="rounded-md border border-[#30363d] bg-[#21262d] px-3 py-1.5 text-xs font-medium text-[#e6edf3] transition hover:border-[#58a6ff] hover:text-[#58a6ff]"
     >
-      <Globe size={18} />
       {lang === "es" ? "EN" : "ES"}
-    </Button>
-  )
+    </button>
+  );
 }
