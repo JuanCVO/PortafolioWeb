@@ -14,4 +14,4 @@ Portafolio personal construido con Next.js 15, Tailwind CSS y Framer Motion.
 - Internacionalización ES/EN
 
 ## 📱 Demo
-[vercel.app/juancvo]([https://tu-vercel-url.vercel.app](https://portafolio-web-juancvos-projects.vercel.app))
+https://portafolio-web-juancvos-projects.vercel.app
