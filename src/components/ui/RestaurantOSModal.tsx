@@ -401,7 +401,7 @@ export default function RestaurantOSModal({ isOpen, onClose, lang }: Props) {
                   ))}
                 </div>
                 <a
-                  href="https://github.com/JuanCVO/restauranteOS"
+                  href="https://github.com/JuanCVO/restaurante-saas"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="flex items-center gap-1.5 rounded-md border border-[#30363d] bg-[#21262d] px-3 py-1.5 text-xs text-[#8b949e] transition hover:border-[#58a6ff] hover:text-[#58a6ff]"
