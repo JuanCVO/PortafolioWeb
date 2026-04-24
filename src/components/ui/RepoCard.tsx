@@ -1,6 +1,14 @@
-import { Star, GitFork } from "lucide-react";
+import { Star, GitFork, Play } from "lucide-react";
 
-type Props = { name: string; desc: string; lang: string; stars: number; forks: number };
+type Props = {
+  name: string;
+  desc: string;
+  lang: string;
+  stars: number;
+  forks: number;
+  onClick?: () => void;
+  hasDemo?: boolean;
+};
 
 const langColors: Record<string, string> = {
   TypeScript: "#3178c6",
@@ -8,12 +16,23 @@ const langColors: Record<string, string> = {
   Python: "#3572A5",
 };
 
-export default function RepoCard({ name, desc, lang, stars, forks }: Props) {
+export default function RepoCard({ name, desc, lang, stars, forks, onClick, hasDemo }: Props) {
   return (
-    <div className="flex flex-col gap-2 rounded-lg border border-[#30363d] bg-[#0d1117] p-4 transition hover:border-[#58a6ff]">
-      <div className="flex items-center gap-2">
-        <span className="text-sm font-semibold text-[#58a6ff]">{name}</span>
-        <span className="rounded-full border border-[#30363d] px-2 py-0.5 text-[10px] text-[#8b949e]">Public</span>
+    <div
+      className={`group flex flex-col gap-2 rounded-lg border border-[#30363d] bg-[#0d1117] p-4 transition-all duration-200 hover:border-[#58a6ff] ${onClick ? "cursor-pointer" : ""}`}
+      onClick={onClick}
+    >
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <span className="text-sm font-semibold text-[#58a6ff]">{name}</span>
+          <span className="rounded-full border border-[#30363d] px-2 py-0.5 text-[10px] text-[#8b949e]">Public</span>
+        </div>
+        {hasDemo && (
+          <span className="flex items-center gap-1 rounded-full border border-[#1f6feb] bg-[#1f6feb1a] px-2 py-0.5 text-[10px] text-[#58a6ff] transition-all group-hover:bg-[#1f6feb35]">
+            <Play className="h-2.5 w-2.5 fill-[#58a6ff]" />
+            demo
+          </span>
+        )}
       </div>
       <p className="text-xs leading-relaxed text-[#8b949e]">{desc}</p>
       <div className="mt-auto flex items-center gap-4 text-xs text-[#8b949e]">
