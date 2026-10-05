@@ -34,8 +34,8 @@ const slides: Slide[] = [
     img: "/restaurantos/login.png",
     label: "Inicio de sesión",
     desc: {
-      es: "Autenticación segura con roles y credenciales por restaurante",
-      en: "Secure authentication with roles and restaurant credentials",
+      es: "Autenticación con JWT, roles (admin y empleado) y datos aislados por restaurante",
+      en: "JWT authentication, roles (admin and employee) and per-restaurant data isolation",
     },
     accent: "#f97316",
     Icon: UtensilsCrossed,
@@ -45,8 +45,8 @@ const slides: Slide[] = [
     img: "/restaurantos/dashboard.png",
     label: "Dashboard",
     desc: {
-      es: "Métricas en tiempo real: pedidos activos, mesas, ingresos y propinas del día",
-      en: "Real-time metrics: active orders, tables, daily revenue and tips",
+      es: "Resumen del día: ventas, caja neta, mesas y propinas por entregar",
+      en: "Daily overview: sales, net cash, tables and tips pending delivery",
     },
     accent: "#58a6ff",
     Icon: LayoutDashboard,
@@ -56,8 +56,8 @@ const slides: Slide[] = [
     img: "/restaurantos/mesas.png",
     label: "Gestión de Mesas",
     desc: {
-      es: "Vista visual del salón con estado de disponibilidad u ocupación en tiempo real",
-      en: "Visual floor view with real-time availability and occupancy status",
+      es: "Vista del salón con el estado de cada mesa (disponible u ocupada) y comandas por mesa",
+      en: "Floor view with each table's status (available or occupied) and per-table orders",
     },
     accent: "#3fb950",
     Icon: Grid3x3,
@@ -75,9 +75,9 @@ const slides: Slide[] = [
   },
 ];
 
-const techTags = ["Next.js", "TypeScript", "Tailwind CSS", "LocalStorage", "Framer Motion"];
+const techTags = ["Next.js", "React", "TypeScript", "Tailwind CSS", "Node.js", "Express", "Prisma", "PostgreSQL"];
 
-function ParallaxCard({ slide }: { slide: Slide }) {
+function ParallaxCard({ slide, lang }: { slide: Slide; lang: "es" | "en" }) {
   const cardRef = useRef<HTMLDivElement>(null);
   const [imgLoaded, setImgLoaded] = useState(false);
   const [imgError, setImgError] = useState(false);
@@ -155,8 +155,8 @@ function ParallaxCard({ slide }: { slide: Slide }) {
                   >
                     <Icon className="h-12 w-12" style={{ color: slide.accent }} />
                   </div>
-                  <span className="text-xs text-[#8b949e]">
-                    Agrega la imagen en /public/restaurantos/{slide.key}.png
+                  <span className="font-pixel text-[0.75rem] text-[#8b949e]">
+                    {lang === "es" ? "Cargando..." : "Loading..."}
                   </span>
                 </div>
               )}
@@ -184,10 +184,10 @@ function ParallaxCard({ slide }: { slide: Slide }) {
               </div>
               <div className="text-center px-4">
                 <p className="font-semibold text-[#e6edf3]">{slide.label}</p>
-                <p className="mt-1 text-xs text-[#8b949e] font-mono">restauranteOS</p>
+                <p className="mt-1 text-xs text-[#8b949e] font-mono">RestaurantOS</p>
               </div>
-              <p className="text-[10px] text-[#484f58] px-6 text-center">
-                Coloca la captura en /public/restaurantos/{slide.key}.png
+              <p className="text-[0.8125rem] text-[#484f58] px-6 text-center">
+                {lang === "es" ? "Captura no disponible" : "Screenshot unavailable"}
               </p>
             </div>
           )}
@@ -296,14 +296,17 @@ export default function RestaurantOSModal({ isOpen, onClose, lang }: Props) {
                     <UtensilsCrossed className="h-4 w-4 text-white" />
                   </div>
                   <div>
-                    <div className="flex items-center gap-2">
-                      <span className="font-semibold text-[#e6edf3]">restauranteOS</span>
-                      <span className="rounded-full border border-[#30363d] px-2 py-0.5 text-[10px] text-[#8b949e]">Public</span>
+                    <div className="flex flex-wrap items-center gap-2">
+                      <span className="font-pixel text-[0.875rem] text-[#e6edf3]">RestaurantOS</span>
+                      <span className="border border-[#30363d] px-1.5 py-0.5 text-[0.8125rem] text-[#8b949e]">Public</span>
+                      <span className="border border-[#f7b955]/60 bg-[#f7b955]/10 px-1.5 py-0.5 text-[0.8125rem] text-[#f7b955]">
+                        {lang === "es" ? "En desarrollo" : "In development"}
+                      </span>
                     </div>
-                    <p className="text-xs text-[#8b949e]">
+                    <p className="mt-1 text-xs text-[#8b949e]">
                       {lang === "es"
-                        ? "SaaS para gestión de restaurantes"
-                        : "Restaurant management SaaS"}
+                        ? "SaaS multi-tenant para gestión de restaurantes"
+                        : "Multi-tenant restaurant management SaaS"}
                     </p>
                   </div>
                 </div>
@@ -329,7 +332,7 @@ export default function RestaurantOSModal({ isOpen, onClose, lang }: Props) {
                       exit="exit"
                       transition={{ duration: 0.22, ease: [0.25, 0.46, 0.45, 0.94] }}
                     >
-                      <ParallaxCard slide={slide} />
+                      <ParallaxCard slide={slide} lang={lang} />
                     </motion.div>
                   </AnimatePresence>
                 </div>
@@ -394,7 +397,7 @@ export default function RestaurantOSModal({ isOpen, onClose, lang }: Props) {
                   {techTags.map((tag) => (
                     <span
                       key={tag}
-                      className="rounded-full border border-[#30363d] bg-[#0d1117] px-2 py-0.5 text-[10px] text-[#8b949e]"
+                      className="rounded-full border border-[#30363d] bg-[#0d1117] px-2 py-0.5 text-[0.8125rem] text-[#8b949e]"
                     >
                       {tag}
                     </span>
@@ -413,7 +416,7 @@ export default function RestaurantOSModal({ isOpen, onClose, lang }: Props) {
 
               {/* Keyboard hint */}
               <div className="flex justify-center pb-3">
-                <span className="text-[10px] text-[#484f58] font-mono">
+                <span className="text-[0.8125rem] text-[#484f58] font-mono">
                   ← → {lang === "es" ? "navegar" : "navigate"} · ESC {lang === "es" ? "cerrar" : "close"}
                 </span>
               </div>

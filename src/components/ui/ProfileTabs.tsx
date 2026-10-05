@@ -1,13 +1,13 @@
 "use client";
 
-import { Book, FolderGit2, Package, Star } from "lucide-react";
+import { Book, FolderGit2, Package, Layers } from "lucide-react";
 
-type Tab = "overview" | "repositories" | "projects" | "stars";
+type Tab = "overview" | "repositories" | "projects" | "skills";
 
 interface Props {
   active: Tab;
   onChange: (tab: Tab) => void;
-  counts: { repos: number; projects: number; stars: number };
+  counts: { repos: number; projects: number; skills: number };
   lang: "es" | "en";
 }
 
@@ -21,11 +21,11 @@ export default function ProfileTabs({ active, onChange, counts, lang }: Props) {
     { key: "overview", label: { es: "Resumen", en: "Overview" }, icon: Book },
     { key: "repositories", label: { es: "Repositorios", en: "Repositories" }, icon: FolderGit2, count: counts.repos },
     { key: "projects", label: { es: "Proyectos", en: "Projects" }, icon: Package, count: counts.projects },
-    { key: "stars", label: { es: "Destacados", en: "Stars" }, icon: Star, count: counts.stars },
+    { key: "skills", label: { es: "Stack", en: "Stack" }, icon: Layers, count: counts.skills },
   ];
 
   return (
-    <div className="sticky top-[57px] z-40 border-b border-[#30363d] bg-[#0d1117]/95 backdrop-blur-md">
+    <div className="sticky top-14 z-40 border-b border-[#30363d] bg-[#0d1117]/95 backdrop-blur-md">
       <div className="mx-auto max-w-6xl px-4">
         <div className="flex gap-1 overflow-x-auto">
           {tabs.map((tab) => {
@@ -35,9 +35,9 @@ export default function ProfileTabs({ active, onChange, counts, lang }: Props) {
               <button
                 key={tab.key}
                 onClick={() => onChange(tab.key)}
-                className={`relative flex items-center gap-2 border-b-2 px-3 py-3 text-sm transition-colors whitespace-nowrap ${
+                className={`font-pixel relative flex items-center gap-2 whitespace-nowrap border-b-4 px-3 py-3 text-[0.8125rem] ${
                   isActive
-                    ? "border-[#f78166] text-[#e6edf3] font-semibold"
+                    ? "border-[#f78166] text-[#e6edf3]"
                     : "border-transparent text-[#8b949e] hover:text-[#e6edf3]"
                 }`}
               >
@@ -45,8 +45,10 @@ export default function ProfileTabs({ active, onChange, counts, lang }: Props) {
                 {tab.label[lang]}
                 {tab.count !== undefined && (
                   <span
-                    className={`rounded-full px-2 py-[1px] text-[10px] font-semibold transition ${
-                      isActive ? "bg-[#30363d] text-[#e6edf3]" : "bg-[#21262d] text-[#8b949e]"
+                    className={`border px-1.5 py-[1px] text-[0.75rem] ${
+                      isActive
+                        ? "border-[#30363d] bg-[#30363d] text-[#e6edf3]"
+                        : "border-[#21262d] bg-[#21262d] text-[#8b949e]"
                     }`}
                   >
                     {tab.count}

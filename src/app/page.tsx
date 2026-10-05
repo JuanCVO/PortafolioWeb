@@ -17,9 +17,12 @@ import {
   Trophy,
   Building2,
   Sparkles,
+  Package,
+  Award,
+  Play,
 } from "lucide-react";
 import TranslateButton from "@/components/ui/TranslateButton";
-import TechStack from "@/components/ui/TechStack";
+import TechStack, { techCount } from "@/components/ui/TechStack";
 import RepoCard from "@/components/ui/RepoCard";
 import ScrambleText from "@/components/ui/ScrambleText";
 import ScrollReveal from "@/components/ui/ScrollReveal";
@@ -29,7 +32,10 @@ import ProfileTabs from "@/components/ui/ProfileTabs";
 import AchievementBadges from "@/components/ui/AchievementBadges";
 import StatusPill from "@/components/ui/StatusPill";
 
-type Tab = "overview" | "repositories" | "projects" | "stars";
+type Tab = "overview" | "repositories" | "projects" | "skills";
+
+const LINKEDIN_URL = "https://www.linkedin.com/in/jcvo07";
+const CV_PATH = "/cv/Juan_Camilo_Velez_CV_Frontend.pdf";
 
 export default function Home() {
   const [lang, setLang] = useState<"es" | "en">("es");
@@ -38,33 +44,74 @@ export default function Home() {
 
   const t = {
     es: {
-      role: "Software Developer · Ingeniería en Sistemas",
-      bio: "Construyo software útil para negocios reales. Me enfoco en desarrollo web con Next.js y React, creando interfaces limpias y sistemas funcionales como RestaurantOS. Estoy aprendiendo backend con Node.js y bases de datos, y me apasiona mejorar la experiencia de usuario en cada proyecto.",
+      role: "Desarrollador Frontend · Full Stack",
+      bio: "Estudiante de Ingeniería de Sistemas y desarrollador web. Trabajo con React, Next.js, Node.js y TypeScript, y vengo del análisis de datos con Python. Me gusta construir aplicaciones completas, de la interfaz a la base de datos, y apoyarme en herramientas de IA para trabajar mejor. Busco un equipo donde aprender y aportar desde el frontend.",
       location: "Tuluá, Valle del Cauca, Colombia",
-      repos: "Repositorios destacados",
       experience: "Experiencia",
       education: "Educación",
       skills: "Stack técnico",
       languages: "Idiomas",
       downloadCV: "Descargar CV",
       readme: "README.md",
-      topLanguages: "Lenguajes principales",
       achievements: "Logros",
       organizations: "Organización",
-      pinned: "Destacados",
+      pinned: "Repositorios destacados",
+      projects: "Proyectos",
+      certification: "Certificación",
       readmeBody:
-        "Hola, soy Juan Camilo VO. Tecnólogo en Desarrollo de Software de la Universidad del Valle y estudiante de Ingeniería en Sistemas. Me apasiona construir soluciones reales como RestaurantOS y explorar nuevas tecnologías. Quiero dominar arquitecturas modernas, aprender Rust o Go para backend de alto rendimiento, y crear productos que impacten de verdad. Mi meta: pasar de construir apps locales a soluciones escalables que lleguen a miles.",
-      expJob: "Analista de Datos – JM La Distribuidora",
-      expPeriod: "Feb 2020 – Dic 2021",
-      expTasks: [
-        "Procesamiento y análisis de datos con Pandas, NumPy y Excel.",
-        "Automatización de reportes estratégicos.",
+        "Hola, soy Juan Camilo VO. Tecnólogo en Desarrollo de Software de la Universidad del Valle y estudiante de noveno semestre de Ingeniería de Sistemas. Me apasiona construir soluciones reales como RestaurantOS y explorar nuevas tecnologías. Ahora mismo estoy afianzando testing (Jest, Playwright), React Native y APIs de LLM. Mi meta: pasar de construir apps locales a soluciones escalables que lleguen a miles.",
+      jobs: [
+        {
+          title: "Analista de Datos",
+          org: "JM La Distribuidora · Tuluá, Valle del Cauca",
+          period: "Feb 2020 – Dic 2021",
+          status: "Pasado",
+          tasks: [
+            "Procesé y analicé datos de la operación para generar informes estratégicos.",
+            "Usé Pandas, NumPy y Excel para visualizar información y apoyar la toma de decisiones.",
+            "Automaticé reportes y organicé la información de distintos puntos, reduciendo el trabajo manual de su elaboración.",
+          ],
+        },
+        {
+          title: "Servicio al cliente",
+          org: "Almacén Es Tío · Celeste Restaurant",
+          period: "2019 – 2020 · 2023 – Presente",
+          status: "Actual",
+          tasks: [
+            "Atención directa, resolución de problemas y trabajo en equipo bajo presión, base de cómo me comunico hoy con perfiles no técnicos.",
+          ],
+        },
       ],
-      langValue: "Español (Nativo) · Inglés (B1)",
+      projectList: [
+        {
+          key: "restaurantos",
+          name: "RestaurantOS",
+          status: "En desarrollo",
+          statusColor: "#f7b955",
+          desc: "Plataforma web multi-tenant para gestionar la operación de un restaurante, de punta a punta: mesas, órdenes, inventario, caja, empleados y reportes en PDF.",
+          tags: ["Next.js", "Node.js", "Express", "Prisma", "PostgreSQL"],
+        },
+        {
+          key: "bsf",
+          name: "Conteo de mosca soldado negra (BSF)",
+          status: "En diseño",
+          statusColor: "#a371f7",
+          desc: "App para contar individuos cruzando fotos a intervalos y video de una cámara fija. Problema planteado por INTEP Roldanillo.",
+          tags: ["Diseño de solución", "Análisis de datos"],
+        },
+      ],
+      demo: "Ver demo",
+      viewCode: "Ver código",
+      certName: "Microsoft AI-900 · Azure AI Fundamentals",
+      certStatus: "En preparación",
+      langs: [
+        { name: "Español", level: "Nativo", n: 6 },
+        { name: "Inglés", level: "B1", n: 3 },
+      ],
       edu: [
-        { title: "Ingeniería en Sistemas", place: "Universidad del Valle", period: "2025 – en curso" },
-        { title: "Tecnólogo en Desarrollo de Software", place: "Universidad del Valle", period: "Feb 2022 – Abr 2025" },
-        { title: "Técnico en Gestión Empresarial", place: "SENA", period: "Feb 2020 – Nov 2021" },
+        { title: "Ingeniería de Sistemas", place: "Universidad del Valle", period: "9.º semestre de 10 · en curso" },
+        { title: "Tecnología en Desarrollo de Software", place: "Universidad del Valle", period: "Feb 2022 – Abr 2025" },
+        { title: "Técnico en Gestión Empresarial", place: "SENA", period: "2020 – 2021" },
         { title: "Bachiller Técnico", place: "I.E. Corazón del Valle", period: "2015 – 2021" },
       ],
       followMe: "Sígueme",
@@ -73,34 +120,74 @@ export default function Home() {
       madeWith: "Hecho con",
     },
     en: {
-      role: "Software Developer · Systems Engineering",
-      bio: "I build useful software for real businesses. I focus on web development with Next.js and React, creating clean interfaces and functional systems like RestaurantOS. I'm learning backend with Node.js and databases, and I'm passionate about improving user experience in every project.",
+      role: "Frontend Developer · Full Stack",
+      bio: "Systems Engineering student and web developer. I work with React, Next.js, Node.js and TypeScript, and I come from data analysis with Python. I enjoy building complete applications, from the interface to the database, and using AI tools to work better. I'm looking for a team where I can learn and contribute from the frontend.",
       location: "Tuluá, Valle del Cauca, Colombia",
-      repos: "Featured repositories",
       experience: "Experience",
       education: "Education",
       skills: "Tech stack",
       languages: "Languages",
       downloadCV: "Download CV",
       readme: "README.md",
-      contributions: "Contribution activity",
-      topLanguages: "Top languages",
       achievements: "Achievements",
       organizations: "Organization",
-      pinned: "Pinned",
+      pinned: "Pinned repositories",
+      projects: "Projects",
+      certification: "Certification",
       readmeBody:
-        "Hi, I'm Juan Camilo VO. Software Development Technologist from Universidad del Valle, currently studying Systems Engineering. I love building real solutions like RestaurantOS and exploring new technologies. I want to master modern architectures, learn Rust or Go for high-performance backends, and create products that truly make an impact. My goal: go from building local apps to scalable solutions reaching thousands.",
-      expJob: "Data Analyst – JM La Distribuidora",
-      expPeriod: "Feb 2020 – Dec 2021",
-      expTasks: [
-        "Data processing and analysis with Pandas, NumPy, and Excel.",
-        "Automation of strategic reports.",
+        "Hi, I'm Juan Camilo VO. Software Development Technologist from Universidad del Valle and ninth-semester Systems Engineering student. I love building real solutions like RestaurantOS and exploring new technologies. Right now I'm getting solid on testing (Jest, Playwright), React Native and LLM APIs. My goal: go from building local apps to scalable solutions reaching thousands.",
+      jobs: [
+        {
+          title: "Data Analyst",
+          org: "JM La Distribuidora · Tuluá, Valle del Cauca",
+          period: "Feb 2020 – Dec 2021",
+          status: "Past",
+          tasks: [
+            "Processed and analyzed operational data to produce strategic reports.",
+            "Used Pandas, NumPy and Excel to visualize information and support decision-making.",
+            "Automated reports and organized information from different locations, reducing the manual work of producing them.",
+          ],
+        },
+        {
+          title: "Customer service",
+          org: "Almacén Es Tío · Celeste Restaurant",
+          period: "2019 – 2020 · 2023 – Present",
+          status: "Current",
+          tasks: [
+            "Direct customer service, problem solving and teamwork under pressure — the foundation of how I communicate with non-technical people today.",
+          ],
+        },
       ],
-      langValue: "Spanish (Native) · English (B1)",
+      projectList: [
+        {
+          key: "restaurantos",
+          name: "RestaurantOS",
+          status: "In development",
+          statusColor: "#f7b955",
+          desc: "Multi-tenant web platform to run a restaurant end to end: tables, orders, inventory, cash, employees and PDF reports.",
+          tags: ["Next.js", "Node.js", "Express", "Prisma", "PostgreSQL"],
+        },
+        {
+          key: "bsf",
+          name: "Black soldier fly (BSF) counting",
+          status: "In design",
+          statusColor: "#a371f7",
+          desc: "App that counts individuals by crossing interval photos with video from a fixed camera. Problem posed by INTEP Roldanillo.",
+          tags: ["Solution design", "Data analysis"],
+        },
+      ],
+      demo: "View demo",
+      viewCode: "View code",
+      certName: "Microsoft AI-900 · Azure AI Fundamentals",
+      certStatus: "In preparation",
+      langs: [
+        { name: "Spanish", level: "Native", n: 6 },
+        { name: "English", level: "B1", n: 3 },
+      ],
       edu: [
-        { title: "Systems Engineering", place: "Universidad del Valle", period: "2025 – ongoing" },
-        { title: "Software Development Technologist", place: "Universidad del Valle", period: "Feb 2022 – Apr 2025" },
-        { title: "Business Management Technician", place: "SENA", period: "Feb 2020 – Nov 2021" },
+        { title: "Systems Engineering", place: "Universidad del Valle", period: "9th of 10 semesters · ongoing" },
+        { title: "Software Development Technology", place: "Universidad del Valle", period: "Feb 2022 – Apr 2025" },
+        { title: "Business Management Technician", place: "SENA", period: "2020 – 2021" },
         { title: "Technical High School", place: "I.E. Corazón del Valle", period: "2015 – 2021" },
       ],
       followMe: "Follow me",
@@ -114,21 +201,21 @@ export default function Home() {
 
   const repos = [
     {
-      name: "restauranteOS",
+      name: "restaurante-saas",
       desc:
         lang === "es"
-          ? "SaaS para gestión de restaurantes – POS, inventario y pedidos."
-          : "Restaurant management SaaS – POS, inventory and orders.",
+          ? "RestaurantOS: SaaS multi-tenant para restaurantes. Mesas, inventario, caja y reportes PDF."
+          : "RestaurantOS: multi-tenant SaaS for restaurants. Tables, inventory, cash and PDF reports.",
       lang: "TypeScript",
-      stars: 3,
-      forks: 1,
+      stars: 1,
+      forks: 0,
     },
     {
-      name: "portafolio-web",
+      name: "PortafolioWeb",
       desc:
         lang === "es"
-          ? "Mi portafolio personal con diseño inspirado en GitHub. Next.js + Tailwind CSS."
-          : "My personal portfolio with GitHub-inspired design. Next.js + Tailwind CSS.",
+          ? "Mi portafolio personal con diseño inspirado en GitHub, en versión retro pixelada. Next.js + Tailwind CSS."
+          : "My personal portfolio with a GitHub-inspired design, in retro pixel style. Next.js + Tailwind CSS.",
       lang: "TypeScript",
       stars: 1,
       forks: 0,
@@ -138,29 +225,32 @@ export default function Home() {
   const scrollToId = (id: string) => {
     const el = document.getElementById(id);
     if (el) {
-      const y = el.getBoundingClientRect().top + window.scrollY - 110;
+      const y = el.getBoundingClientRect().top + window.scrollY - 130;
       window.scrollTo({ top: y, behavior: "smooth" });
     }
   };
 
   const handleTabChange = (tab: Tab) => {
     setActiveTab(tab);
-    if (tab === "repositories" || tab === "projects") scrollToId("repos");
-    else if (tab === "stars") scrollToId("skills");
+    if (tab === "repositories") scrollToId("repos");
+    else if (tab === "projects") scrollToId("projects");
+    else if (tab === "skills") scrollToId("skills");
     else window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
   return (
     <div className="min-h-screen">
       {/* Top nav */}
-      <nav className="sticky top-0 z-50 border-b border-[#30363d] bg-[#010409]/90 backdrop-blur-md">
-        <div className="mx-auto flex max-w-6xl items-center justify-between px-4 py-3">
+      <nav className="sticky top-0 z-50 h-14 border-b border-[#30363d] bg-[#010409]/90 backdrop-blur-md">
+        <div className="mx-auto flex h-full max-w-6xl items-center justify-between px-4">
           <div className="flex items-center gap-2.5">
             <Code2 className="h-7 w-7 text-[#58a6ff]" />
-            <ScrambleText className="font-mono text-base font-semibold tracking-tight" text="JuanCVO" />
+            <ScrambleText className="font-pixel text-xs" text="JuanCVO" />
             <span className="hidden text-[#8b949e] sm:inline">/</span>
-            <span className="hidden font-mono text-sm text-[#e6edf3] sm:inline">portafolio</span>
-            <span className="hidden rounded-full border border-[#30363d] px-1.5 py-0.5 text-[10px] text-[#8b949e] sm:inline">
+            <span className="font-pixel hidden text-[0.8125rem] text-[#e6edf3] sm:inline">
+              portafolio<span className="blink text-[#3fb950]">_</span>
+            </span>
+            <span className="hidden border border-[#30363d] px-1.5 py-0.5 text-[0.8125rem] text-[#8b949e] sm:inline">
               Public
             </span>
           </div>
@@ -169,7 +259,7 @@ export default function Home() {
               href="https://github.com/JuanCVO"
               target="_blank"
               rel="noopener noreferrer"
-              className="hidden items-center gap-1.5 rounded-md border border-[#30363d] bg-[#21262d] px-2.5 py-1.5 text-xs font-medium text-[#e6edf3] transition hover:border-[#58a6ff] hover:text-[#58a6ff] sm:flex"
+              className="pixel-btn font-pixel hidden items-center gap-1.5 border border-[#30363d] bg-[#21262d] px-2.5 py-2 text-[0.8125rem] text-[#e6edf3] hover:border-[#58a6ff] hover:text-[#58a6ff] sm:flex"
               aria-label="GitHub"
             >
               <Github className="h-3.5 w-3.5" />
@@ -184,7 +274,7 @@ export default function Home() {
       <ProfileTabs
         active={activeTab}
         onChange={handleTabChange}
-        counts={{ repos: repos.length, projects: 1, stars: 4 }}
+        counts={{ repos: repos.length, projects: text.projectList.length, skills: techCount }}
         lang={lang}
       />
 
@@ -193,11 +283,12 @@ export default function Home() {
         {/* Sidebar */}
         <aside className="mb-6 w-full shrink-0 md:mb-0 md:w-72">
           <div className="flex flex-col items-center text-center md:items-start md:text-left">
-            <div className="profile-container mb-4">
+            <div className="mb-5">
               <ProfileAnimation src="/foto.png" alt="Juan Camilo Vélez" />
             </div>
-            <h1 className="text-xl font-bold leading-tight">Juan Camilo Vélez Ospina</h1>
+            <h1 className="font-pixel text-sm leading-relaxed">Juan Camilo Vélez Ospina</h1>
             <p className="mt-1 font-mono text-base text-[#8b949e]">JuanCVO</p>
+            <p className="font-pixel mt-2 text-[0.75rem] uppercase leading-relaxed text-[#3fb950]">{text.role}</p>
 
             <div className="mt-3">
               <StatusPill lang={lang} />
@@ -227,26 +318,26 @@ export default function Home() {
 
             <div className="mt-5 flex w-full flex-col gap-2">
               <a
-                href="/cv/ES - CV Developer Web - Juan Camilo V..pdf"
-                download
-                className="flex items-center justify-center gap-2 rounded-md border border-[#238636] bg-[#238636] px-3 py-1.5 text-sm font-medium text-white transition hover:bg-[#2ea043]"
+                href={CV_PATH}
+                download="Juan_Camilo_Velez_CV_Frontend.pdf"
+                className="pixel-btn font-pixel flex items-center justify-center gap-2 border border-[#238636] bg-[#238636] px-3 py-2.5 text-[0.8125rem] text-white hover:bg-[#2ea043]"
               >
                 <Download className="h-4 w-4" /> {text.downloadCV}
               </a>
-              <div className="grid grid-cols-2 gap-2">
+              <div className="grid grid-cols-2 gap-2 md:grid-cols-1">
                 <a
                   href="https://github.com/JuanCVO"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-1.5 rounded-md border border-[#30363d] bg-[#21262d] px-2 py-1.5 text-xs transition hover:border-[#58a6ff] hover:text-[#58a6ff]"
+                  className="pixel-btn font-pixel flex items-center justify-center gap-1.5 border border-[#30363d] bg-[#21262d] px-2 py-2 text-[0.75rem] hover:border-[#58a6ff] hover:text-[#58a6ff]"
                 >
                   <Github className="h-3.5 w-3.5" /> GitHub
                 </a>
                 <a
-                  href="https://www.linkedin.com/in/juan-camilo-vélez-ospina-a63086255/"
+                  href={LINKEDIN_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-1.5 rounded-md border border-[#30363d] bg-[#21262d] px-2 py-1.5 text-xs transition hover:border-[#58a6ff] hover:text-[#58a6ff]"
+                  className="pixel-btn font-pixel flex items-center justify-center gap-1.5 border border-[#30363d] bg-[#21262d] px-2 py-2 text-[0.75rem] hover:border-[#58a6ff] hover:text-[#58a6ff]"
                 >
                   <Linkedin className="h-3.5 w-3.5" /> LinkedIn
                 </a>
@@ -255,9 +346,9 @@ export default function Home() {
 
             {/* Achievements */}
             <div className="mt-6 w-full">
-              <div className="mb-2 flex items-center gap-1.5">
+              <div className="mb-3 flex items-center gap-1.5">
                 <Trophy className="h-3.5 w-3.5 text-[#8b949e]" />
-                <h3 className="text-xs font-semibold text-[#e6edf3]">{text.achievements}</h3>
+                <h3 className="font-pixel text-[0.75rem] uppercase text-[#e6edf3]">{text.achievements}</h3>
               </div>
               <AchievementBadges lang={lang} />
             </div>
@@ -266,17 +357,17 @@ export default function Home() {
             <div className="mt-6 w-full">
               <div className="mb-2 flex items-center gap-1.5">
                 <Building2 className="h-3.5 w-3.5 text-[#8b949e]" />
-                <h3 className="text-xs font-semibold text-[#e6edf3]">{text.organizations}</h3>
+                <h3 className="font-pixel text-[0.75rem] uppercase text-[#e6edf3]">{text.organizations}</h3>
               </div>
               <div className="flex gap-2">
                 <div
-                  className="flex h-8 w-8 items-center justify-center rounded-md border border-[#30363d] bg-[#0d1117] text-[11px] font-bold text-[#58a6ff]"
+                  className="font-pixel flex h-8 w-8 items-center justify-center border border-[#30363d] bg-[#0d1117] text-[0.75rem] text-[#58a6ff]"
                   title="Universidad del Valle"
                 >
                   UV
                 </div>
                 <div
-                  className="flex h-8 w-8 items-center justify-center rounded-md border border-[#30363d] bg-[#0d1117] text-[10px] font-bold text-[#3fb950]"
+                  className="font-pixel flex h-8 w-auto items-center justify-center border border-[#30363d] bg-[#0d1117] px-1.5 text-[0.6875rem] text-[#3fb950]"
                   title="SENA"
                 >
                   SENA
@@ -297,13 +388,13 @@ export default function Home() {
                   href="https://github.com/JuanCVO"
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-[11px] text-[#8b949e] transition hover:text-[#58a6ff]"
+                  className="text-[0.875rem] text-[#8b949e] transition hover:text-[#58a6ff]"
                 >
                   {text.viewAll}
                 </a>
               }
             >
-              <div className="flex items-start gap-2 rounded-md border border-[#30363d] bg-[#0d1117] p-3">
+              <div className="flex items-start gap-2 border border-[#30363d] bg-[#0d1117] p-3">
                 <Sparkles className="mt-0.5 h-4 w-4 shrink-0 text-[#f7b955]" />
                 <p className="text-sm leading-relaxed text-[#e6edf3]">{text.readmeBody}</p>
               </div>
@@ -316,85 +407,187 @@ export default function Home() {
                 title={text.pinned}
                 icon={Pin}
                 actions={
-                  <span className="rounded-full border border-[#30363d] px-2 py-0.5 text-[10px] text-[#8b949e]">
+                  <span className="border border-[#30363d] px-2 py-0.5 text-[0.8125rem] text-[#8b949e]">
                     {repos.length}
                   </span>
                 }
               >
                 <div className="grid gap-3 sm:grid-cols-2">
-                  {repos.map((r) =>
-                    r.name === "restauranteOS" ? (
-                      <RepoCard
-                        key={r.name}
-                        {...r}
-                        hasDemo
-                        onClick={() => setRestaurantOSOpen(true)}
-                      />
-                    ) : (
-                      <RepoCard key={r.name} {...r} />
-                    )
-                  )}
+                  <RepoCard {...repos[0]} hasDemo onClick={() => setRestaurantOSOpen(true)} />
+                  <RepoCard {...repos[1]} href="https://github.com/JuanCVO/PortafolioWeb" />
                 </div>
+              </GhBox>
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.2}>
+            <div id="projects">
+              <GhBox
+                title={text.projects}
+                icon={Package}
+                actions={
+                  <span className="border border-[#30363d] px-2 py-0.5 text-[0.8125rem] text-[#8b949e]">
+                    {text.projectList.length}
+                  </span>
+                }
+              >
+                <div className="grid gap-3">
+                  {text.projectList.map((p) => (
+                    <div
+                      key={p.key}
+                      className="border border-[#30363d] bg-[#0d1117] p-4"
+                    >
+                      <div className="mb-2 flex flex-wrap items-start justify-between gap-2">
+                        <p className="font-pixel text-[0.875rem] leading-relaxed text-[#e6edf3]">{p.name}</p>
+                        <span
+                          className="font-pixel shrink-0 border px-2 py-1 text-[0.6875rem]"
+                          style={{
+                            color: p.statusColor,
+                            borderColor: `${p.statusColor}80`,
+                            backgroundColor: `${p.statusColor}14`,
+                          }}
+                        >
+                          {p.status}
+                        </span>
+                      </div>
+                      <p className="text-sm leading-relaxed text-[#8b949e]">{p.desc}</p>
+                      <div className="mt-3 flex flex-wrap gap-1.5">
+                        {p.tags.map((tag) => (
+                          <span
+                            key={tag}
+                            className="border border-[#30363d] bg-[#161b22] px-2 py-0.5 text-[0.875rem] text-[#8b949e]"
+                          >
+                            {tag}
+                          </span>
+                        ))}
+                      </div>
+                      {p.key === "restaurantos" && (
+                        <div className="mt-4 flex flex-wrap gap-2">
+                          <button
+                            onClick={() => setRestaurantOSOpen(true)}
+                            className="pixel-btn font-pixel flex items-center gap-1.5 border border-[#1f6feb] bg-[#1f6feb1a] px-3 py-2 text-[0.75rem] text-[#58a6ff] hover:bg-[#1f6feb35]"
+                          >
+                            <Play className="h-3 w-3 fill-[#58a6ff]" />
+                            {text.demo}
+                          </button>
+                          <a
+                            href="https://github.com/JuanCVO/restaurante-saas"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="pixel-btn font-pixel flex items-center gap-1.5 border border-[#30363d] bg-[#21262d] px-3 py-2 text-[0.75rem] hover:border-[#58a6ff] hover:text-[#58a6ff]"
+                          >
+                            <Github className="h-3 w-3" />
+                            {text.viewCode}
+                          </a>
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </GhBox>
+            </div>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.25}>
+            <div id="skills">
+              <GhBox
+                title={text.skills}
+                icon={Wrench}
+                actions={
+                  <span className="border border-[#30363d] px-2 py-0.5 text-[0.8125rem] text-[#8b949e]">
+                    {techCount}
+                  </span>
+                }
+              >
+                <TechStack lang={lang} />
               </GhBox>
             </div>
           </ScrollReveal>
 
           <ScrollReveal delay={0.3}>
-            <div id="skills">
-              <GhBox title={text.skills} icon={Wrench}>
-                <TechStack />
-              </GhBox>
-            </div>
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.35}>
             <GhBox title={text.experience} icon={Briefcase}>
-              <div className="rounded-md border border-[#30363d] bg-[#0d1117] p-4">
-                <div className="mb-3 flex items-start justify-between gap-3">
-                  <div>
-                    <p className="font-semibold text-[#e6edf3]">{text.expJob}</p>
-                    <p className="font-mono text-xs text-[#8b949e]">{text.expPeriod}</p>
-                  </div>
-                  <span className="shrink-0 rounded-full border border-[#30363d] px-2 py-0.5 text-[10px] text-[#8b949e]">
-                    {lang === "es" ? "Pasado" : "Past"}
-                  </span>
-                </div>
-                <ul className="space-y-2">
-                  {text.expTasks.map((task, i) => (
-                    <li key={i} className="flex items-start gap-2 text-sm text-[#8b949e]">
-                      <span className="mt-1.5 h-1 w-1 shrink-0 rounded-full bg-[#3fb950]" />
-                      {task}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </GhBox>
-          </ScrollReveal>
-
-          <ScrollReveal delay={0.4}>
-            <GhBox title={text.education} icon={GraduationCap}>
-              <div className="relative space-y-3 pl-5">
-                <div className="absolute left-[9px] top-2 bottom-2 w-px bg-[#30363d]" />
-                {text.edu.map((e, i) => (
-                  <div
-                    key={i}
-                    className="relative rounded-md border border-[#30363d] bg-[#0d1117] p-3 transition hover:border-[#58a6ff]"
-                  >
-                    <div className="absolute -left-[17px] top-3.5 h-2.5 w-2.5 rounded-full border-2 border-[#161b22] bg-[#58a6ff]" />
-                    <p className="text-sm font-semibold text-[#e6edf3]">{e.title}</p>
-                    <p className="text-xs text-[#8b949e]">{e.place}</p>
-                    <p className="mt-0.5 font-mono text-[11px] text-[#6e7681]">{e.period}</p>
+              <div className="space-y-3">
+                {text.jobs.map((job) => (
+                  <div key={job.title} className="border border-[#30363d] bg-[#0d1117] p-4">
+                    <div className="mb-3 flex items-start justify-between gap-3">
+                      <div>
+                        <p className="font-semibold text-[#e6edf3]">{job.title}</p>
+                        <p className="text-xs text-[#8b949e]">{job.org}</p>
+                        <p className="mt-0.5 font-mono text-xs text-[#6e7681]">{job.period}</p>
+                      </div>
+                      <span
+                        className={`shrink-0 border px-2 py-0.5 text-[0.8125rem] ${
+                          job.status === "Actual" || job.status === "Current"
+                            ? "border-[#3fb950]/60 bg-[#3fb950]/10 text-[#3fb950]"
+                            : "border-[#30363d] text-[#8b949e]"
+                        }`}
+                      >
+                        {job.status}
+                      </span>
+                    </div>
+                    <ul className="space-y-2">
+                      {job.tasks.map((task, i) => (
+                        <li key={i} className="flex items-start gap-2 text-sm text-[#8b949e]">
+                          <span className="mt-1.5 h-1.5 w-1.5 shrink-0 bg-[#3fb950]" />
+                          {task}
+                        </li>
+                      ))}
+                    </ul>
                   </div>
                 ))}
               </div>
             </GhBox>
           </ScrollReveal>
 
+          <ScrollReveal delay={0.35}>
+            <GhBox title={text.education} icon={GraduationCap}>
+              <div className="relative space-y-3 pl-5">
+                <div className="absolute left-[9px] top-2 bottom-2 w-0.5 bg-[#30363d]" />
+                {text.edu.map((e, i) => (
+                  <div
+                    key={i}
+                    className="pixel-card relative border border-[#30363d] bg-[#0d1117] p-3 hover:border-[#58a6ff]"
+                  >
+                    <div className="absolute -left-[19px] top-3.5 h-3 w-3 border-2 border-[#161b22] bg-[#58a6ff]" />
+                    <p className="text-sm font-semibold text-[#e6edf3]">{e.title}</p>
+                    <p className="text-xs text-[#8b949e]">{e.place}</p>
+                    <p className="mt-0.5 font-mono text-[0.875rem] text-[#6e7681]">{e.period}</p>
+                  </div>
+                ))}
+              </div>
+            </GhBox>
+          </ScrollReveal>
+
+          <ScrollReveal delay={0.4}>
+            <GhBox title={text.certification} icon={Award}>
+              <div className="flex items-center justify-between gap-3 border border-[#30363d] bg-[#0d1117] p-3">
+                <div className="flex items-center gap-3">
+                  <Award className="h-5 w-5 shrink-0 text-[#f7b955]" />
+                  <p className="text-sm text-[#e6edf3]">{text.certName}</p>
+                </div>
+                <span className="font-pixel shrink-0 border border-[#f7b955]/60 bg-[#f7b955]/10 px-2 py-1 text-[0.6875rem] text-[#f7b955]">
+                  {text.certStatus}
+                </span>
+              </div>
+            </GhBox>
+          </ScrollReveal>
+
           <ScrollReveal delay={0.45}>
             <GhBox title={text.languages} icon={Globe}>
-              <div className="flex items-center gap-3 rounded-md border border-[#30363d] bg-[#0d1117] p-3">
-                <Globe className="h-4 w-4 text-[#58a6ff]" />
-                <p className="text-sm text-[#8b949e]">{text.langValue}</p>
+              <div className="space-y-3 border border-[#30363d] bg-[#0d1117] p-3">
+                {text.langs.map((l) => (
+                  <div key={l.name} className="flex items-center justify-between gap-3">
+                    <p className="text-sm text-[#e6edf3]">{l.name}</p>
+                    <div className="flex items-center gap-3">
+                      <div className="flex gap-1" aria-hidden>
+                        {Array.from({ length: 6 }).map((_, i) => (
+                          <span key={i} className={`h-2.5 w-5 ${i < l.n ? "bg-[#3fb950]" : "bg-[#30363d]"}`} />
+                        ))}
+                      </div>
+                      <span className="font-mono text-xs text-[#8b949e]">{l.level}</span>
+                    </div>
+                  </div>
+                ))}
               </div>
             </GhBox>
           </ScrollReveal>
@@ -407,7 +600,7 @@ export default function Home() {
           <div className="flex items-center gap-2 text-xs text-[#8b949e]">
             <Code2 className="h-4 w-4 text-[#58a6ff]" />
             <span>
-              © 2025 Juan Camilo Vélez · {text.madeWith} Next.js + Tailwind
+              © {new Date().getFullYear()} Juan Camilo Vélez · {text.madeWith} Next.js + Tailwind
             </span>
           </div>
           <div className="flex items-center gap-4 text-xs">
@@ -420,7 +613,7 @@ export default function Home() {
               GitHub
             </a>
             <a
-              href="https://www.linkedin.com/in/juan-camilo-vélez-ospina-a63086255/"
+              href={LINKEDIN_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="text-[#8b949e] transition hover:text-[#58a6ff]"
@@ -458,11 +651,11 @@ function GhBox({
   children: React.ReactNode;
 }) {
   return (
-    <div className="overflow-hidden rounded-lg border border-[#30363d] bg-[#161b22] transition-colors hover:border-[#30363d]">
-      <div className="flex items-center justify-between gap-2 border-b border-[#30363d] bg-[#161b22] px-4 py-2.5">
+    <div className="pixel-box overflow-hidden border border-[#30363d] bg-[#161b22]">
+      <div className="flex items-center justify-between gap-2 border-b border-[#30363d] bg-[#1c2128] px-4 py-3">
         <div className="flex min-w-0 items-center gap-2">
           {Icon && <Icon className="h-4 w-4 shrink-0 text-[#8b949e]" />}
-          <h2 className="truncate text-sm font-semibold tracking-tight text-[#e6edf3]">{title}</h2>
+          <h2 className="font-pixel truncate text-[0.875rem] text-[#e6edf3]">{title}</h2>
         </div>
         {actions && <div className="shrink-0">{actions}</div>}
       </div>

@@ -1,14 +1,110 @@
 @import "tailwindcss";
 
+/* ── Base: GitHub Dark con alma retro ─────────────────────────── */
 body {
   background-color: #0d1117;
+  background-image:
+    linear-gradient(rgba(88, 166, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(88, 166, 255, 0.035) 1px, transparent 1px);
+  background-size: 8px 8px;
   color: #e6edf3;
-  font-family: var(--font-inter), sans-serif;
+  font-family: var(--font-pixel-body), ui-monospace, monospace;
   min-height: 100vh;
+  -webkit-font-smoothing: none;
+  letter-spacing: 0.05em;
 }
 
+::selection {
+  background: #1f6feb;
+  color: #fff;
+}
 
-::-webkit-scrollbar { width: 8px; }
-::-webkit-scrollbar-track { background: #0d1117; }
-::-webkit-scrollbar-thumb { background: #30363d; border-radius: 4px; }
+/* Líneas de escaneo CRT, muy sutiles */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.1) 0,
+    rgba(0, 0, 0, 0.1) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+/* Todo es cuadrado y de bordes gruesos (sin CSS en capa → gana a las utilidades) */
+*,
+*::before,
+*::after {
+  border-radius: 0 !important;
+}
+.border { border-width: 2px; }
+.border-b { border-bottom-width: 2px; }
+.border-t { border-top-width: 2px; }
+
+/* ── Utilidades pixel ─────────────────────────────────────────── */
+.font-pixel {
+  font-family: var(--font-pixel), ui-monospace, monospace;
+  letter-spacing: 0;
+  line-height: 1.6;
+}
+
+.pixel-box {
+  box-shadow: 4px 4px 0 0 #010409;
+}
+
+.pixel-btn {
+  box-shadow: 3px 3px 0 0 #010409;
+  transition: transform 0.1s steps(2), box-shadow 0.1s steps(2), border-color 0.1s steps(2),
+    color 0.1s steps(2), background-color 0.1s steps(2);
+}
+.pixel-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 0 #010409;
+}
+.pixel-btn:active {
+  transform: translate(3px, 3px);
+  box-shadow: 0 0 0 0 #010409;
+}
+
+.pixel-card {
+  box-shadow: 3px 3px 0 0 #010409;
+  transition: transform 0.12s steps(2), box-shadow 0.12s steps(2), border-color 0.12s steps(2);
+}
+.pixel-card:hover {
+  transform: translate(-2px, -2px);
+  box-shadow: 5px 5px 0 0 #010409;
+}
+
+.pixel-img {
+  image-rendering: pixelated;
+}
+
+.blink {
+  animation: blink 1s steps(2, start) infinite;
+}
+@keyframes blink {
+  to {
+    visibility: hidden;
+  }
+}
+
+/* ── Scrollbar ────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track { background: #0d1117; border-left: 2px solid #30363d; }
+::-webkit-scrollbar-thumb { background: #30363d; border: 2px solid #0d1117; }
 ::-webkit-scrollbar-thumb:hover { background: #58a6ff; }
+
+@media (prefers-reduced-motion: reduce) {
+  .blink { animation: none; }
+  .pixel-btn, .pixel-card { transition: none; }
+}
+
+/* Tamaño base: en escritorio todo el texto (rem) crece un poco para leerse sin esfuerzo */
+html { font-size: 16px; }
+@media (min-width: 768px) {
+  html { font-size: 18px; }
+}
