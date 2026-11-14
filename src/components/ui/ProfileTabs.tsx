@@ -1,8 +1,19 @@
 "use client";
 
-import { Book, FolderGit2, Package, Layers } from "lucide-react";
+import { useEffect, useRef } from "react";
+import { useReducedMotion } from "framer-motion";
+import { Book, FolderGit2, Package, Layers, History, Mail } from "lucide-react";
 
-type Tab = "overview" | "repositories" | "projects" | "skills";
+export type Tab = "overview" | "repositories" | "projects" | "skills" | "background" | "contact";
+
+export const TAB_LABELS: Record<Tab, { es: string; en: string }> = {
+  overview: { es: "Resumen", en: "Overview" },
+  repositories: { es: "Repositorios", en: "Repositories" },
+  projects: { es: "Proyectos", en: "Projects" },
+  skills: { es: "Stack", en: "Stack" },
+  background: { es: "Trayectoria", en: "Background" },
+  contact: { es: "Contacto", en: "Contact" },
+};
 
 interface Props {
   active: Tab;
@@ -12,22 +23,33 @@ interface Props {
 }
 
 export default function ProfileTabs({ active, onChange, counts, lang }: Props) {
-  const tabs: {
-    key: Tab;
-    label: { es: string; en: string };
-    icon: React.ElementType;
-    count?: number;
-  }[] = [
-    { key: "overview", label: { es: "Resumen", en: "Overview" }, icon: Book },
-    { key: "repositories", label: { es: "Repositorios", en: "Repositories" }, icon: FolderGit2, count: counts.repos },
-    { key: "projects", label: { es: "Proyectos", en: "Projects" }, icon: Package, count: counts.projects },
-    { key: "skills", label: { es: "Stack", en: "Stack" }, icon: Layers, count: counts.skills },
+  const listRef = useRef<HTMLDivElement>(null);
+  const reduceMotion = useReducedMotion();
+
+  const tabs: { key: Tab; icon: React.ElementType; count?: number }[] = [
+    { key: "overview", icon: Book },
+    { key: "repositories", icon: FolderGit2, count: counts.repos },
+    { key: "projects", icon: Package, count: counts.projects },
+    { key: "skills", icon: Layers, count: counts.skills },
+    { key: "background", icon: History },
+    { key: "contact", icon: Mail },
   ];
 
+  // En pantallas angostas la fila se desplaza: mantiene la pestaña activa centrada
+  useEffect(() => {
+    const list = listRef.current;
+    const current = list?.querySelector<HTMLElement>('[aria-current="true"]');
+    if (!list || !current || list.scrollWidth <= list.clientWidth) return;
+    list.scrollTo({
+      left: current.offsetLeft - (list.clientWidth - current.offsetWidth) / 2,
+      behavior: reduceMotion ? "auto" : "smooth",
+    });
+  }, [active, reduceMotion]);
+
   return (
-    <div className="sticky top-14 z-40 border-b border-[#30363d] bg-[#0d1117]/95 backdrop-blur-md">
-      <div className="mx-auto max-w-6xl px-4">
-        <div className="flex gap-1 overflow-x-auto">
+    <div id="profile-tabs" className="sticky top-14 z-40 border-b border-[#30363d] bg-[#0d1117]/95 backdrop-blur-md">
+      <nav aria-label={lang === "es" ? "Secciones" : "Sections"} className="mx-auto max-w-6xl px-4">
+        <div ref={listRef} className="no-scrollbar relative flex gap-1 overflow-x-auto">
           {tabs.map((tab) => {
             const Icon = tab.icon;
             const isActive = tab.key === active;
@@ -35,17 +57,18 @@ export default function ProfileTabs({ active, onChange, counts, lang }: Props) {
               <button
                 key={tab.key}
                 onClick={() => onChange(tab.key)}
-                className={`font-pixel relative flex items-center gap-2 whitespace-nowrap border-b-4 px-3 py-3 text-[0.8125rem] ${
+                aria-current={isActive ? "true" : undefined}
+                className={`font-display relative flex items-center gap-2 whitespace-nowrap border-b-4 px-2.5 py-3 text-[0.875rem] ${
                   isActive
                     ? "border-[#f78166] text-[#e6edf3]"
                     : "border-transparent text-[#8b949e] hover:text-[#e6edf3]"
                 }`}
               >
-                <Icon className="h-4 w-4" />
-                {tab.label[lang]}
+                <Icon className="h-4 w-4 lg:max-xl:hidden" />
+                {TAB_LABELS[tab.key][lang]}
                 {tab.count !== undefined && (
                   <span
-                    className={`border px-1.5 py-[1px] text-[0.75rem] ${
+                    className={`border px-1.5 py-[1px] text-[0.75rem] lg:max-xl:hidden ${
                       isActive
                         ? "border-[#30363d] bg-[#30363d] text-[#e6edf3]"
                         : "border-[#21262d] bg-[#21262d] text-[#8b949e]"
@@ -58,7 +81,7 @@ export default function ProfileTabs({ active, onChange, counts, lang }: Props) {
             );
           })}
         </div>
-      </div>
+      </nav>
     </div>
   );
 }

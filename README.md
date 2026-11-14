@@ -13,7 +13,7 @@ Demo: https://portafolio-web-juancvos-projects.vercel.app
 
 Mi portafolio personal. Mantiene el layout de un perfil de GitHub (pestañas, sidebar, tarjetas de repositorios) con una estética retro pixelada sobre la paleta GitHub Dark.
 
-Secciones: resumen, repositorios destacados, proyectos, stack técnico, experiencia, educación, certificación e idiomas. Todo el contenido está en español e inglés.
+Secciones: resumen, repositorios destacados, proyectos, stack técnico, trayectoria (experiencia, educación, certificación e idiomas) y contacto. Todo el contenido está en español e inglés.
 
 ## Detalles de diseño
 
@@ -21,7 +21,11 @@ Secciones: resumen, repositorios destacados, proyectos, stack técnico, experien
 - La foto de perfil se dibuja en un canvas a baja resolución y paleta reducida; al pasar el cursor se muestra la foto real.
 - Bordes gruesos, sombras duras y transiciones por pasos, definidos en `src/app/globals.css`.
 - Modal con carrusel de capturas de RestaurantOS.
-- Animaciones con Framer Motion y respeto de `prefers-reduced-motion` en los efectos CSS.
+- Las pestañas siguen el scroll: marcan la sección visible y se centran solas en pantallas angostas. El nombre de la sección también aparece en la ruta de la barra superior.
+- Nube 3D de tecnologías dibujada en canvas, con los íconos de Simple Icons y el nombre de cada uno al pasar el cursor o tocarlo.
+- Sección de contacto con botón para copiar el correo.
+- Explosión de píxeles al hacer clic, texto que se escribe solo y aparición de secciones por pasos.
+- Animaciones con Framer Motion. Con `prefers-reduced-motion` activado se desactivan las partículas, la escritura, la nube en movimiento y los efectos CSS.
 
 ## Stack
 

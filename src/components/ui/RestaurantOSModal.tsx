@@ -155,7 +155,7 @@ function ParallaxCard({ slide, lang }: { slide: Slide; lang: "es" | "en" }) {
                   >
                     <Icon className="h-12 w-12" style={{ color: slide.accent }} />
                   </div>
-                  <span className="font-pixel text-[0.75rem] text-[#8b949e]">
+                  <span className="font-display text-[0.875rem] text-[#8b949e]">
                     {lang === "es" ? "Cargando..." : "Loading..."}
                   </span>
                 </div>
@@ -184,7 +184,7 @@ function ParallaxCard({ slide, lang }: { slide: Slide; lang: "es" | "en" }) {
               </div>
               <div className="text-center px-4">
                 <p className="font-semibold text-[#e6edf3]">{slide.label}</p>
-                <p className="mt-1 text-xs text-[#8b949e] font-mono">RestaurantOS</p>
+                <p className="mt-1 text-xs text-[#8b949e]">RestaurantOS</p>
               </div>
               <p className="text-[0.8125rem] text-[#484f58] px-6 text-center">
                 {lang === "es" ? "Captura no disponible" : "Screenshot unavailable"}
@@ -297,7 +297,7 @@ export default function RestaurantOSModal({ isOpen, onClose, lang }: Props) {
                   </div>
                   <div>
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="font-pixel text-[0.875rem] text-[#e6edf3]">RestaurantOS</span>
+                      <span className="font-display text-[1rem] text-[#e6edf3]">RestaurantOS</span>
                       <span className="border border-[#30363d] px-1.5 py-0.5 text-[0.8125rem] text-[#8b949e]">Public</span>
                       <span className="border border-[#f7b955]/60 bg-[#f7b955]/10 px-1.5 py-0.5 text-[0.8125rem] text-[#f7b955]">
                         {lang === "es" ? "En desarrollo" : "In development"}
@@ -416,7 +416,7 @@ export default function RestaurantOSModal({ isOpen, onClose, lang }: Props) {
 
               {/* Keyboard hint */}
               <div className="flex justify-center pb-3">
-                <span className="text-[0.8125rem] text-[#484f58] font-mono">
+                <span className="text-[0.8125rem] text-[#484f58]">
                   ← → {lang === "es" ? "navegar" : "navigate"} · ESC {lang === "es" ? "cerrar" : "close"}
                 </span>
               </div>

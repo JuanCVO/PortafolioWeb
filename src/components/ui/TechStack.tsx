@@ -95,7 +95,7 @@ export default function TechStack({ lang }: { lang: "es" | "en" }) {
       {techGroups.map((group) => (
         <div key={group.key}>
           <h3
-            className={`font-pixel mb-2.5 text-[0.75rem] uppercase ${
+            className={`font-display mb-2.5 text-[0.875rem] uppercase ${
               group.learning ? "text-[#3fb950]" : "text-[#8b949e]"
             }`}
           >

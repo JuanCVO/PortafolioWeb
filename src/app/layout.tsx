@@ -1,20 +1,21 @@
 import type { Metadata } from "next";
-import { DotGothic16, Press_Start_2P } from "next/font/google";
+import { Fredoka, Nunito } from "next/font/google";
 import "./globals.css";
+import PixelBurst from "@/components/ui/PixelBurst";
 
-const pixelBody = DotGothic16({
-  weight: "400",
+// Títulos, pestañas y botones. También se dibuja en el carnet 3D
+const display = Fredoka({
   subsets: ["latin", "latin-ext"],
-  variable: "--font-pixel-body",
+  variable: "--font-display",
 });
 
-const pixelHeading = Press_Start_2P({
+// Texto corrido
+const body = Nunito({
   subsets: ["latin", "latin-ext"],
-  weight: "400",
-  variable: "--font-pixel",
+  variable: "--font-body",
 });
 
-const siteUrl = "https://portafolio-web-juancvos-projects.vercel.app";
+const siteUrl ="https://portafolio-web-juancvos-projects.vercel.app";
 const title = "Juan Camilo Vélez | Desarrollador Frontend · Full Stack";
 const description =
   "Portafolio de Juan Camilo Vélez: desarrollador frontend y full stack con React, Next.js, Node.js y TypeScript. Estudiante de Ingeniería de Sistemas en la Universidad del Valle.";
@@ -44,9 +45,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="es" className={`${pixelBody.variable} ${pixelHeading.variable}`}>
+    <html lang="es" className={`${display.variable} ${body.variable}`}>
       <body className="bg-[#0d1117] text-[#e6edf3] antialiased">
         {children}
+        <PixelBurst />
       </body>
     </html>
   );

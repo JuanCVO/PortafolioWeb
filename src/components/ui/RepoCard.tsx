@@ -24,9 +24,9 @@ export default function RepoCard({ name, desc, lang, stars, forks, onClick, href
 
   const body = (
     <>
-      <div className="flex items-center justify-between gap-2">
-        <div className="flex min-w-0 items-center gap-2">
-          <span className="font-pixel break-all text-[0.75rem] leading-snug text-[#58a6ff]">{name}</span>
+      <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1.5">
+        <div className="flex flex-wrap items-center gap-2">
+          <span className="font-display whitespace-nowrap text-[0.875rem] leading-snug text-[#58a6ff]">{name}</span>
           <span className="border border-[#30363d] px-1.5 py-0.5 text-[0.8125rem] text-[#8b949e]">Public</span>
         </div>
         {hasDemo && (

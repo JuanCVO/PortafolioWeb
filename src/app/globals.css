@@ -8,10 +8,9 @@ body {
     linear-gradient(90deg, rgba(88, 166, 255, 0.035) 1px, transparent 1px);
   background-size: 8px 8px;
   color: #e6edf3;
-  font-family: var(--font-pixel-body), ui-monospace, monospace;
+  font-family: var(--font-body), system-ui, sans-serif;
   min-height: 100vh;
-  -webkit-font-smoothing: none;
-  letter-spacing: 0.05em;
+  -webkit-font-smoothing: antialiased;
 }
 
 ::selection {
@@ -45,11 +44,13 @@ body::after {
 .border-b { border-bottom-width: 2px; }
 .border-t { border-top-width: 2px; }
 
-/* ── Utilidades pixel ─────────────────────────────────────────── */
-.font-pixel {
-  font-family: var(--font-pixel), ui-monospace, monospace;
-  letter-spacing: 0;
-  line-height: 1.6;
+/* ── Utilidades ───────────────────────────────────────────────── */
+.font-display {
+  font-family: var(--font-display), system-ui, sans-serif;
+  font-weight: 600;
+}
+.font-display.uppercase {
+  letter-spacing: 0.04em;
 }
 
 .pixel-box {
@@ -92,6 +93,48 @@ body::after {
   }
 }
 
+.no-scrollbar { scrollbar-width: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* Destello que cruza el botón al pasar el cursor, por pasos */
+.pixel-shine {
+  position: relative;
+  overflow: hidden;
+}
+.pixel-shine::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 20%;
+  background: rgba(255, 255, 255, 0.22);
+  transform: translateX(-120%);
+  pointer-events: none;
+}
+.pixel-shine:hover::after {
+  animation: pixel-shine 0.6s steps(8) 1;
+}
+@keyframes pixel-shine {
+  to { transform: translateX(560%); }
+}
+
+/* Franja de bloques de color que avanza por pasos */
+.pixel-stripe {
+  background-image: repeating-linear-gradient(
+    90deg,
+    #58a6ff 0 16px,
+    #3fb950 16px 32px,
+    #f7b955 32px 48px,
+    #f78166 48px 64px
+  );
+  background-size: 64px 100%;
+  animation: pixel-stripe 1.6s steps(4) infinite;
+}
+@keyframes pixel-stripe {
+  to { background-position-x: 64px; }
+}
+
 /* ── Scrollbar ────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 12px; height: 12px; }
 ::-webkit-scrollbar-track { background: #0d1117; border-left: 2px solid #30363d; }
@@ -100,6 +143,8 @@ body::after {
 
 @media (prefers-reduced-motion: reduce) {
   .blink { animation: none; }
+  .pixel-stripe { animation: none; }
+  .pixel-shine:hover::after { animation: none; }
   .pixel-btn, .pixel-card { transition: none; }
 }
 

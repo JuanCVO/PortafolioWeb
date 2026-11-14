@@ -66,7 +66,7 @@ export default function ProfileAnimation({ src, alt }: { src: string; alt: strin
         />
       </div>
 
-      <span className="font-pixel absolute -bottom-3 -right-3 border-2 border-[#30363d] bg-[#238636] px-2 py-1 text-[0.75rem] text-white shadow-[3px_3px_0_0_#010409]">
+      <span className="font-display absolute -bottom-3 -right-3 border-2 border-[#30363d] bg-[#238636] px-2 py-1 text-[0.875rem] text-white shadow-[3px_3px_0_0_#010409]">
         LVL 9
       </span>
     </motion.div>
