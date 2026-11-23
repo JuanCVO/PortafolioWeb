@@ -13,14 +13,14 @@ Demo: https://portafolio-web-juancvos-projects.vercel.app
 
 Mi portafolio personal. Mantiene el layout de un perfil de GitHub (pestañas, sidebar, tarjetas de repositorios) con una estética retro pixelada sobre la paleta GitHub Dark.
 
-Secciones: resumen, repositorios destacados, proyectos, stack técnico, trayectoria (experiencia, educación, certificación e idiomas) y contacto. Todo el contenido está en español e inglés.
+Secciones: resumen, repositorios destacados, proyectos, stack técnico, trayectoria (experiencia, educación, certificación e idiomas) y contacto. La versión en español está en `/` y la versión en inglés en `/en`, cada una con su idioma y metadatos propios.
 
 ## Detalles de diseño
 
-- Tipografías Press Start 2P (títulos y botones) y DotGothic16 (texto), cargadas con `next/font`.
-- La foto de perfil se dibuja en un canvas a baja resolución y paleta reducida; al pasar el cursor se muestra la foto real.
+- Tipografías Fredoka (títulos y botones) y Nunito (texto), cargadas con `next/font`.
+- En escritorio, el perfil incluye un carnet 3D interactivo. En móvil se muestra una foto estática para llegar antes al contenido y evitar cargar la escena 3D.
 - Bordes gruesos, sombras duras y transiciones por pasos, definidos en `src/app/globals.css`.
-- Modal con carrusel de capturas de RestaurantOS.
+- Galería accesible con capturas de RestaurantOS; el botón se presenta como «Ver capturas» para distinguirla de una demo funcional.
 - Las pestañas siguen el scroll: marcan la sección visible y se centran solas en pantallas angostas. El nombre de la sección también aparece en la ruta de la barra superior.
 - Nube 3D de tecnologías dibujada en canvas, con los íconos de Simple Icons y el nombre de cada uno al pasar el cursor o tocarlo.
 - Sección de contacto con botón para copiar el correo.
@@ -36,10 +36,11 @@ Next.js 15 (App Router), React 19, TypeScript, Tailwind CSS 4, Framer Motion y l
 ```
 src/
   app/
-    layout.tsx        Fuentes y metadatos (SEO y Open Graph)
-    page.tsx          Página única y textos ES/EN
+    (es)/             Ruta y metadatos en español
+    (en)/en/          Ruta y metadatos en inglés
     globals.css       Tema retro y utilidades pixel
-  components/ui/      Componentes de la interfaz
+  components/         Página compartida, documento y componentes de la interfaz
+  lib/site-metadata.ts Metadatos SEO y Open Graph por idioma
 public/
   cv/                 CV en PDF
   restaurantos/       Capturas del modal de RestaurantOS

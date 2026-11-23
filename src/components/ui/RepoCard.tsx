@@ -1,14 +1,13 @@
-import { Star, GitFork, Play } from "lucide-react";
+import { Play } from "lucide-react";
 
 type Props = {
   name: string;
   desc: string;
   lang: string;
-  stars: number;
-  forks: number;
+  locale: "es" | "en";
   onClick?: () => void;
   href?: string;
-  hasDemo?: boolean;
+  demoLabel?: string;
 };
 
 const langColors: Record<string, string> = {
@@ -17,7 +16,7 @@ const langColors: Record<string, string> = {
   Python: "#3572A5",
 };
 
-export default function RepoCard({ name, desc, lang, stars, forks, onClick, href, hasDemo }: Props) {
+export default function RepoCard({ name, desc, lang, locale, onClick, href, demoLabel }: Props) {
   const className = `pixel-card group flex flex-col gap-2 border border-[#30363d] bg-[#0d1117] p-4 hover:border-[#58a6ff] ${
     onClick || href ? "cursor-pointer" : ""
   }`;
@@ -27,12 +26,12 @@ export default function RepoCard({ name, desc, lang, stars, forks, onClick, href
       <div className="flex flex-wrap items-center justify-between gap-x-2 gap-y-1.5">
         <div className="flex flex-wrap items-center gap-2">
           <span className="font-display whitespace-nowrap text-[0.875rem] leading-snug text-[#58a6ff]">{name}</span>
-          <span className="border border-[#30363d] px-1.5 py-0.5 text-[0.8125rem] text-[#8b949e]">Public</span>
+          <span className="border border-[#30363d] px-1.5 py-0.5 text-[0.8125rem] text-[#8b949e]">{locale === "es" ? "Público" : "Public"}</span>
         </div>
-        {hasDemo && (
+        {demoLabel && (
           <span className="flex shrink-0 items-center gap-1 border border-[#1f6feb] bg-[#1f6feb1a] px-2 py-0.5 text-[0.8125rem] text-[#58a6ff] group-hover:bg-[#1f6feb35]">
             <Play className="h-2.5 w-2.5 fill-[#58a6ff]" />
-            demo
+            {demoLabel}
           </span>
         )}
       </div>
@@ -42,8 +41,6 @@ export default function RepoCard({ name, desc, lang, stars, forks, onClick, href
           <span className="inline-block h-2.5 w-2.5" style={{ backgroundColor: langColors[lang] ?? "#aaa" }} />
           {lang}
         </span>
-        <span className="flex items-center gap-1"><Star className="h-3 w-3" />{stars}</span>
-        <span className="flex items-center gap-1"><GitFork className="h-3 w-3" />{forks}</span>
       </div>
     </>
   );

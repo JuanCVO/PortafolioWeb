@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
+import Image from "next/image";
 import {
   motion,
   AnimatePresence,
@@ -15,6 +16,7 @@ import {
   UtensilsCrossed,
   LayoutDashboard,
   Grid3x3,
+  Package,
   ShoppingCart,
   Github,
 } from "lucide-react";
@@ -22,7 +24,7 @@ import {
 interface Slide {
   key: string;
   img: string;
-  label: string;
+  label: { es: string; en: string };
   desc: { es: string; en: string };
   accent: string;
   Icon: React.ElementType;
@@ -32,7 +34,7 @@ const slides: Slide[] = [
   {
     key: "login",
     img: "/restaurantos/login.png",
-    label: "Inicio de sesión",
+    label: { es: "Inicio de sesión", en: "Sign in" },
     desc: {
       es: "Autenticación con JWT, roles (admin y empleado) y datos aislados por restaurante",
       en: "JWT authentication, roles (admin and employee) and per-restaurant data isolation",
@@ -43,10 +45,10 @@ const slides: Slide[] = [
   {
     key: "dashboard",
     img: "/restaurantos/dashboard.png",
-    label: "Dashboard",
+    label: { es: "Panel principal", en: "Dashboard" },
     desc: {
-      es: "Resumen del día: ventas, caja neta, mesas y propinas por entregar",
-      en: "Daily overview: sales, net cash, tables and tips pending delivery",
+      es: "Ventas archivadas, caja del día, propinas e historial de cierres en un mismo panel",
+      en: "Archived sales, daily cash, tips and closing history in one dashboard",
     },
     accent: "#58a6ff",
     Icon: LayoutDashboard,
@@ -54,21 +56,32 @@ const slides: Slide[] = [
   {
     key: "mesas",
     img: "/restaurantos/mesas.png",
-    label: "Gestión de Mesas",
+    label: { es: "Gestión de mesas", en: "Table management" },
     desc: {
-      es: "Vista del salón con el estado de cada mesa (disponible u ocupada) y comandas por mesa",
-      en: "Floor view with each table's status (available or occupied) and per-table orders",
+      es: "Mesas disponibles u ocupadas, filtros y búsqueda para gestionar el salón",
+      en: "Available and occupied tables, filters and search to manage the dining room",
     },
     accent: "#3fb950",
     Icon: Grid3x3,
   },
   {
-    key: "gastos",
-    img: "/restaurantos/gastos.png",
-    label: "Compras y Gastos",
+    key: "inventario",
+    img: "/restaurantos/inventario.png",
+    label: { es: "Inventario", en: "Inventory" },
     desc: {
-      es: "Control de compras, base de caja, gastos operativos y pagos a empleados",
-      en: "Purchase control, cash base, operating expenses and employee payments",
+      es: "Productos por categoría con precio, existencias y alertas de stock bajo",
+      en: "Products by category with prices, quantities and low-stock alerts",
+    },
+    accent: "#60a5fa",
+    Icon: Package,
+  },
+  {
+    key: "compras-gastos",
+    img: "/restaurantos/compras-gastos.png",
+    label: { es: "Compras y gastos", en: "Purchases and expenses" },
+    desc: {
+      es: "Registro de compras, gastos, base de caja y pagos a empleados",
+      en: "Recording purchases, expenses, opening cash and employee payments",
     },
     accent: "#a78bfa",
     Icon: ShoppingCart,
@@ -139,7 +152,7 @@ function ParallaxCard({ slide, lang }: { slide: Slide; lang: "es" | "en" }) {
         style={{ rotateX, rotateY, scale, transformStyle: "preserve-3d" }}
         className="relative overflow-hidden rounded-xl border border-[#30363d] bg-[#0d1117] shadow-[0_8px_40px_rgba(0,0,0,0.6)]"
       >
-        <div className="relative" style={{ aspectRatio: "16/9" }}>
+        <div className="relative" style={{ aspectRatio: "1877/971" }}>
           {!imgError ? (
             <>
               {!imgLoaded && (
@@ -160,12 +173,14 @@ function ParallaxCard({ slide, lang }: { slide: Slide; lang: "es" | "en" }) {
                   </span>
                 </div>
               )}
-              <img
+              <Image
                 src={slide.img}
-                alt={slide.label}
+                alt={slide.label[lang]}
+                fill
+                sizes="(max-width: 768px) 100vw, 672px"
                 onLoad={() => setImgLoaded(true)}
                 onError={() => setImgError(true)}
-                className={`w-full h-full object-cover object-top transition-opacity duration-300 ${
+                className={`w-full h-full object-contain transition-opacity duration-300 ${
                   imgLoaded ? "opacity-100" : "opacity-0"
                 }`}
               />
@@ -183,7 +198,7 @@ function ParallaxCard({ slide, lang }: { slide: Slide; lang: "es" | "en" }) {
                 <Icon className="h-14 w-14" style={{ color: slide.accent }} />
               </div>
               <div className="text-center px-4">
-                <p className="font-semibold text-[#e6edf3]">{slide.label}</p>
+                <p className="font-semibold text-[#e6edf3]">{slide.label[lang]}</p>
                 <p className="mt-1 text-xs text-[#8b949e]">RestaurantOS</p>
               </div>
               <p className="text-[0.8125rem] text-[#484f58] px-6 text-center">
@@ -221,6 +236,11 @@ interface Props {
 export default function RestaurantOSModal({ isOpen, onClose, lang }: Props) {
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(0);
+  const dialogRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
+  const onCloseRef = useRef(onClose);
+
+  useEffect(() => { onCloseRef.current = onClose; }, [onClose]);
 
   const prev = useCallback(() => {
     setDirection(-1);
@@ -239,14 +259,35 @@ export default function RestaurantOSModal({ isOpen, onClose, lang }: Props) {
 
   useEffect(() => {
     if (!isOpen) return;
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    const frame = requestAnimationFrame(() => closeButtonRef.current?.focus());
     const handler = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") onCloseRef.current();
       if (e.key === "ArrowLeft") prev();
       if (e.key === "ArrowRight") next();
+      if (e.key === "Tab") {
+        const focusable = dialogRef.current?.querySelectorAll<HTMLElement>(
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+        );
+        if (!focusable?.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && (document.activeElement === first || !dialogRef.current?.contains(document.activeElement))) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && (document.activeElement === last || !dialogRef.current?.contains(document.activeElement))) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     };
     document.addEventListener("keydown", handler);
-    return () => document.removeEventListener("keydown", handler);
-  }, [isOpen, onClose, prev, next]);
+    return () => {
+      cancelAnimationFrame(frame);
+      document.removeEventListener("keydown", handler);
+      previouslyFocused?.focus();
+    };
+  }, [isOpen, prev, next]);
 
   useEffect(() => {
     if (isOpen) {
@@ -276,18 +317,24 @@ export default function RestaurantOSModal({ isOpen, onClose, lang }: Props) {
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
             onClick={onClose}
+            aria-hidden="true"
             className="fixed inset-0 z-50 bg-black/75 backdrop-blur-sm"
           />
 
           {/* Modal */}
           <motion.div
+            ref={dialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="restaurantos-title"
+            aria-describedby="restaurantos-description"
             initial={{ opacity: 0, scale: 0.93, y: 16 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.93, y: 16 }}
             transition={{ type: "spring", damping: 28, stiffness: 260 }}
             className="fixed inset-x-3 top-1/2 z-50 -translate-y-1/2 mx-auto max-w-2xl"
           >
-            <div className="overflow-hidden rounded-xl border border-[#30363d] bg-[#161b22] shadow-[0_24px_80px_rgba(0,0,0,0.8)]">
+            <div className="max-h-[calc(100dvh-1.5rem)] overflow-y-auto rounded-xl border border-[#30363d] bg-[#161b22] shadow-[0_24px_80px_rgba(0,0,0,0.8)]">
 
               {/* Header */}
               <div className="flex items-center justify-between border-b border-[#30363d] px-5 py-3.5">
@@ -297,13 +344,13 @@ export default function RestaurantOSModal({ isOpen, onClose, lang }: Props) {
                   </div>
                   <div>
                     <div className="flex flex-wrap items-center gap-2">
-                      <span className="font-display text-[1rem] text-[#e6edf3]">RestaurantOS</span>
-                      <span className="border border-[#30363d] px-1.5 py-0.5 text-[0.8125rem] text-[#8b949e]">Public</span>
+                      <span id="restaurantos-title" className="font-display text-[1rem] text-[#e6edf3]">RestaurantOS</span>
+                      <span className="border border-[#30363d] px-1.5 py-0.5 text-[0.8125rem] text-[#8b949e]">{lang === "es" ? "Público" : "Public"}</span>
                       <span className="border border-[#f7b955]/60 bg-[#f7b955]/10 px-1.5 py-0.5 text-[0.8125rem] text-[#f7b955]">
                         {lang === "es" ? "En desarrollo" : "In development"}
                       </span>
                     </div>
-                    <p className="mt-1 text-xs text-[#8b949e]">
+                    <p id="restaurantos-description" className="mt-1 text-xs text-[#8b949e]">
                       {lang === "es"
                         ? "SaaS multi-tenant para gestión de restaurantes"
                         : "Multi-tenant restaurant management SaaS"}
@@ -311,9 +358,10 @@ export default function RestaurantOSModal({ isOpen, onClose, lang }: Props) {
                   </div>
                 </div>
                 <button
+                  ref={closeButtonRef}
                   onClick={onClose}
                   className="rounded-md p-1.5 text-[#8b949e] transition hover:bg-[#30363d] hover:text-[#e6edf3]"
-                  aria-label="Cerrar"
+                  aria-label={lang === "es" ? "Cerrar galería" : "Close gallery"}
                 >
                   <X className="h-4 w-4" />
                 </button>
@@ -341,14 +389,14 @@ export default function RestaurantOSModal({ isOpen, onClose, lang }: Props) {
                 <button
                   onClick={prev}
                   className="absolute left-1 top-1/2 -translate-y-1/2 rounded-full border border-[#30363d] bg-[#21262d] p-2 text-[#8b949e] transition hover:border-[#58a6ff] hover:text-[#e6edf3] shadow-lg"
-                  aria-label="Anterior"
+                  aria-label={lang === "es" ? "Captura anterior" : "Previous screenshot"}
                 >
                   <ChevronLeft className="h-4 w-4" />
                 </button>
                 <button
                   onClick={next}
                   className="absolute right-1 top-1/2 -translate-y-1/2 rounded-full border border-[#30363d] bg-[#21262d] p-2 text-[#8b949e] transition hover:border-[#58a6ff] hover:text-[#e6edf3] shadow-lg"
-                  aria-label="Siguiente"
+                  aria-label={lang === "es" ? "Captura siguiente" : "Next screenshot"}
                 >
                   <ChevronRight className="h-4 w-4" />
                 </button>
@@ -360,13 +408,19 @@ export default function RestaurantOSModal({ isOpen, onClose, lang }: Props) {
                   <button
                     key={i}
                     onClick={() => goTo(i)}
-                    className="h-1.5 rounded-full transition-all duration-300"
-                    style={{
-                      width: i === current ? 24 : 6,
-                      backgroundColor: i === current ? slides[i].accent : "#30363d",
-                    }}
-                    aria-label={`Slide ${i + 1}`}
-                  />
+                    className="flex h-8 w-8 items-center justify-center"
+                    aria-label={lang === "es" ? `Ver captura ${i + 1}` : `View screenshot ${i + 1}`}
+                    aria-current={i === current ? "true" : undefined}
+                  >
+                    <span
+                      aria-hidden="true"
+                      className="h-1.5 transition-all duration-300"
+                      style={{
+                        width: i === current ? 24 : 6,
+                        backgroundColor: i === current ? slides[i].accent : "#30363d",
+                      }}
+                    />
+                  </button>
                 ))}
               </div>
 
@@ -380,9 +434,14 @@ export default function RestaurantOSModal({ isOpen, onClose, lang }: Props) {
                     exit={{ opacity: 0, y: -4 }}
                     transition={{ duration: 0.18 }}
                   >
-                    <div className="flex items-center gap-2 mb-0.5">
-                      <div className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: slide.accent }} />
-                      <p className="text-sm font-semibold text-[#e6edf3]">{slide.label}</p>
+                    <div className="mb-0.5 flex flex-wrap items-center justify-between gap-2">
+                      <div className="flex items-center gap-2">
+                        <div className="h-1.5 w-1.5 rounded-full" style={{ backgroundColor: slide.accent }} />
+                        <p className="text-sm font-semibold text-[#e6edf3]">{slide.label[lang]}</p>
+                      </div>
+                      <a href={slide.img} target="_blank" rel="noopener noreferrer" className="text-xs text-[#58a6ff] underline-offset-2 hover:underline">
+                        {lang === "es" ? "Ver tamaño completo" : "View full size"}
+                      </a>
                     </div>
                     <p className="text-xs leading-relaxed text-[#8b949e] pl-3.5">
                       {slide.desc[lang]}

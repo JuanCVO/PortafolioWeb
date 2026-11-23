@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 import {
   Download,
   Mail,
@@ -51,18 +52,26 @@ const stickyOffset = () =>
   (document.getElementById("top-nav")?.offsetHeight ?? 56) +
   (document.getElementById("profile-tabs")?.offsetHeight ?? 52);
 
-export default function Home() {
-  const [lang, setLang] = useState<"es" | "en">("es");
+export default function PortfolioPage({ lang }: { lang: "es" | "en" }) {
   const [restaurantOSOpen, setRestaurantOSOpen] = useState(false);
+  const [show3D, setShow3D] = useState(false);
   const [activeTab, setActiveTab] = useState<Tab>("overview");
   // true mientras la página se desplaza por un clic en una pestaña: el seguimiento espera a que termine
   const programmaticScroll = useRef(false);
   const settleTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
+  useEffect(() => {
+    const media = window.matchMedia("(min-width: 768px)");
+    const update = () => setShow3D(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+
   const t = {
     es: {
       role: "Desarrollador Frontend · Full Stack",
-      bio: "Estudiante de Ingeniería de Sistemas y desarrollador web. Trabajo con React, Next.js, Node.js y TypeScript, y vengo del análisis de datos con Python. Me gusta construir aplicaciones completas, de la interfaz a la base de datos, y apoyarme en herramientas de IA para trabajar mejor. Busco un equipo donde aprender y aportar desde el frontend.",
+      bio: "Desarrollador frontend y estudiante de Ingeniería de Sistemas. Construyo aplicaciones web con React, Next.js y TypeScript, con experiencia en backend y análisis de datos. Busco aportar a un equipo desde el frontend.",
       location: "Tuluá, Valle del Cauca, Colombia",
       experience: "Experiencia",
       education: "Educación",
@@ -105,7 +114,7 @@ export default function Home() {
           name: "RestaurantOS",
           status: "En desarrollo",
           statusColor: "#f7b955",
-          desc: "Plataforma web multi-tenant para gestionar la operación de un restaurante, de punta a punta: mesas, órdenes, inventario, caja, empleados y reportes en PDF.",
+          desc: "Plataforma multi-tenant para restaurantes: mesas y órdenes, inventario con alertas de stock, compras y gastos, caja, cierres diarios y reportes en PDF.",
           tags: ["Next.js", "Node.js", "Express", "Prisma", "PostgreSQL"],
         },
         {
@@ -117,7 +126,7 @@ export default function Home() {
           tags: ["Diseño de solución", "Análisis de datos"],
         },
       ],
-      demo: "Ver demo",
+      demo: "Ver capturas",
       viewCode: "Ver código",
       certName: "Microsoft AI-900 · Azure AI Fundamentals",
       certStatus: "En preparación",
@@ -138,7 +147,7 @@ export default function Home() {
     },
     en: {
       role: "Frontend Developer · Full Stack",
-      bio: "Systems Engineering student and web developer. I work with React, Next.js, Node.js and TypeScript, and I come from data analysis with Python. I enjoy building complete applications, from the interface to the database, and using AI tools to work better. I'm looking for a team where I can learn and contribute from the frontend.",
+      bio: "Frontend developer and Systems Engineering student. I build web applications with React, Next.js and TypeScript, with experience in backend development and data analysis. I'm looking to contribute to a team from the frontend.",
       location: "Tuluá, Valle del Cauca, Colombia",
       experience: "Experience",
       education: "Education",
@@ -181,7 +190,7 @@ export default function Home() {
           name: "RestaurantOS",
           status: "In development",
           statusColor: "#f7b955",
-          desc: "Multi-tenant web platform to run a restaurant end to end: tables, orders, inventory, cash, employees and PDF reports.",
+          desc: "Multi-tenant restaurant platform for tables and orders, inventory with low-stock alerts, purchases and expenses, daily cash closing and PDF reports.",
           tags: ["Next.js", "Node.js", "Express", "Prisma", "PostgreSQL"],
         },
         {
@@ -193,7 +202,7 @@ export default function Home() {
           tags: ["Solution design", "Data analysis"],
         },
       ],
-      demo: "View demo",
+      demo: "View screenshots",
       viewCode: "View code",
       certName: "Microsoft AI-900 · Azure AI Fundamentals",
       certStatus: "In preparation",
@@ -221,11 +230,9 @@ export default function Home() {
       name: "restaurante-saas",
       desc:
         lang === "es"
-          ? "RestaurantOS: SaaS multi-tenant para restaurantes. Mesas, inventario, caja y reportes PDF."
-          : "RestaurantOS: multi-tenant SaaS for restaurants. Tables, inventory, cash and PDF reports.",
+          ? "RestaurantOS: SaaS multi-tenant con mesas, inventario, caja y cierres diarios."
+          : "RestaurantOS: multi-tenant SaaS with tables, inventory, cash and daily closing.",
       lang: "TypeScript",
-      stars: 1,
-      forks: 0,
     },
     {
       name: "PortafolioWeb",
@@ -234,8 +241,6 @@ export default function Home() {
           ? "Mi portafolio personal con diseño inspirado en GitHub, en versión retro pixelada. Next.js + Tailwind CSS."
           : "My personal portfolio with a GitHub-inspired design, in retro pixel style. Next.js + Tailwind CSS.",
       lang: "TypeScript",
-      stars: 1,
-      forks: 0,
     },
   ];
 
@@ -323,7 +328,7 @@ export default function Home() {
               <span className="blink text-[#3fb950]">_</span>
             </span>
             <span className="hidden border border-[#30363d] px-1.5 py-0.5 text-[0.8125rem] text-[#8b949e] sm:inline">
-              Public
+              {lang === "es" ? "Público" : "Public"}
             </span>
           </div>
           <div className="flex items-center gap-2">
@@ -345,7 +350,7 @@ export default function Home() {
               <Mail className="h-3.5 w-3.5" />
               <span className="hidden md:inline">{text.contact}</span>
             </button>
-            <TranslateButton lang={lang} setLang={setLang} />
+            <TranslateButton lang={lang} />
           </div>
         </div>
       </nav>
@@ -363,11 +368,27 @@ export default function Home() {
         {/* Sidebar */}
         <aside className="mb-6 w-full shrink-0 md:mb-0 md:w-72 lg:w-80 xl:w-96">
           <div className="flex flex-col items-center text-center md:items-start md:text-left">
-            {/* El alto es ~1.4 veces el ancho de la columna; el margen negativo pega la cinta a las pestañas */}
-            <div className="-mt-6 mb-2 h-[30rem] w-full max-w-sm md:-mt-8 md:h-[25.5rem] md:max-w-none lg:h-[28.5rem] xl:h-[34rem]">
-              <Lanyard photoUrl="/foto.png" role={text.role} lang={lang} />
+            <div className="mb-4 md:hidden">
+              <Image
+                src="/foto.png"
+                alt="Juan Camilo Vélez Ospina"
+                width={144}
+                height={144}
+                priority
+                className="h-36 w-36 border-4 border-[#30363d] object-cover object-[50%_15%]"
+              />
+            </div>
+            <div className="-mt-8 mb-2 hidden h-[25.5rem] w-full md:block lg:h-[28.5rem] xl:h-[34rem]">
+              {show3D ? (
+                <Lanyard photoUrl="/foto.png" role={text.role} lang={lang} />
+              ) : (
+                <div className="flex h-full items-center justify-center">
+                  <Image src="/foto.png" alt="Juan Camilo Vélez Ospina" width={192} height={192} className="h-48 w-48 border-4 border-[#30363d] object-cover object-[50%_15%]" />
+                </div>
+              )}
             </div>
             <h1 className="font-display text-2xl leading-snug">Juan Camilo Vélez Ospina</h1>
+            <p className="mt-1 text-sm font-semibold text-[#58a6ff] md:hidden">{text.role}</p>
 
             <p className="mt-4 text-sm leading-relaxed text-[#e6edf3]">{text.bio}</p>
 
@@ -485,8 +506,8 @@ export default function Home() {
                 }
               >
                 <div className="grid gap-3 sm:grid-cols-2">
-                  <RepoCard {...repos[0]} hasDemo onClick={() => setRestaurantOSOpen(true)} />
-                  <RepoCard {...repos[1]} href="https://github.com/JuanCVO/PortafolioWeb" />
+                  <RepoCard {...repos[0]} locale={lang} demoLabel={text.demo} onClick={() => setRestaurantOSOpen(true)} />
+                  <RepoCard {...repos[1]} locale={lang} href="https://github.com/JuanCVO/PortafolioWeb" />
                 </div>
               </GhBox>
             </ScrollReveal>

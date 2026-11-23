@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useCallback} from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 
 type Props = {
   text: string;
@@ -20,8 +20,10 @@ export default function ScrambleText({
 }: Props) {
   const [scrambledChars, setScrambledChars] = useState<string[]>([]);
   const [isAnimating, setIsAnimating] = useState(false);
+  const reduceMotion = useReducedMotion();
 
   const doScramble = useCallback(() => {
+    if (reduceMotion) return;
     setIsAnimating(true);
     let iterations = 0;
     const maxIterations = 35;
@@ -43,22 +45,23 @@ export default function ScrambleText({
         setTimeout(() => setIsAnimating(false), 300);
       }
     }, 30);
-  }, [text]);
+  }, [text, reduceMotion]);
 
 
   useEffect(() => {
+    if (reduceMotion) return;
     const timeout = setTimeout(() => doScramble(), delay);
     return () => clearTimeout(timeout);
-  }, [delay]); // Solo 'delay'
+  }, [delay, doScramble, reduceMotion]);
 
  
   useEffect(() => {
     let interval: NodeJS.Timeout;
-    if (!isAnimating) {
+    if (!isAnimating && !reduceMotion) {
       interval = setInterval(doScramble, repeatInterval);
     }
     return () => clearInterval(interval);
-  }, [isAnimating, repeatInterval, doScramble]);
+  }, [isAnimating, repeatInterval, doScramble, reduceMotion]);
 
   useEffect(() => {
     setScrambledChars(text.split(""));
@@ -67,7 +70,7 @@ export default function ScrambleText({
   return (
     <motion.span
       className={className}
-      initial={{ opacity: 0 }}
+      initial={reduceMotion ? false : { opacity: 0 }}
       animate={{ opacity: 1 }}
     >
       {scrambledChars.map((char, i) => (
@@ -75,8 +78,8 @@ export default function ScrambleText({
           key={`char-${i}-${char}-${isAnimating}`}
           style={{ display: "inline-block" }}
           animate={{
-            scale: isAnimating ? [1, 1.25, 0.85, 1] : 1,
-            color: isAnimating 
+            scale: isAnimating && !reduceMotion ? [1, 1.25, 0.85, 1] : 1,
+            color: isAnimating && !reduceMotion
               ? ["#8b949e", "#58a6ff", "#3fb950", "#e6edf3"] 
               : "#e6edf3",
           }}
